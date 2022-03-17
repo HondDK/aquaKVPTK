@@ -122,15 +122,10 @@ String SendHTML(float tempSensor1,float tempSensor2,float tempSensor3)// вер�
   ptr +="</head>\n";
   ptr +="<body>\n";
   ptr +="<div id=\"webpage\">\n";
-  ptr +="<h1>ESP8266 Temperature Monitor</h1>\n";
-  ptr +="<p>Living Room: ";
+  ptr +="<h1>Аквариум</h1>\n";
+  ptr +="<p>Температура воды: ";
   ptr +=tempSensor1;
   ptr +="&deg;C</p>";
-  ptr +="<p>Bedroom: ";
-  ptr +=tempSensor2;
-  ptr +="&deg;C</p>";
-  ptr +="<p>Kitchen: ";
-  ptr +=tempSensor3;
   ptr +="&deg;C</p>";
   ptr +="</div>\n";
   ptr +="</body>\n";
