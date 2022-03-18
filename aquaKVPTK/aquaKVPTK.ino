@@ -1,7 +1,7 @@
+//АКВАРИУМ ПРОЕКТ 
+
 
 #include <Wire.h>
-
-#include "DS3231.h"
 
 #include "DS3231.h" //нужно включить все необходимые библиотеки для работы с часами.
 
@@ -22,10 +22,10 @@ DallasTemperature sensors(&oneWire);
 
 float tempSensors;
 
-uint8_t sensor1[8] = { 0x28, 0xEE, 0xD5, 0x64, 0x1A, 0x16, 0x02, 0xEC  };
+uint8_t sensor1[8] = { 0x28, 0xEE, 0xD5, 0x64, 0x1A, 0x16, 0x02, 0xEC  }; // температура 
 
 //подключение к интернету
-const char* ssid = "YourNetworkName";   // SSID
+const char* ssid = "KVPTK_Guest";   // SSID
 const char* password = "YourPassword";  // пароль
 
 ESP8266WebServer server(80); 
@@ -35,15 +35,8 @@ delay(100);
   
 sensors.begin(); 
 
-
-
-
-
-
-
-
-char compileTime[] = __TIME__; //время компиляции.
-
+const int relayPin1 = D1;     // Пин к которому подключен реле
+int relaySTATE1 = LOW; // состояние реле 
 
 void setup()
 
@@ -62,10 +55,41 @@ while (WiFi.status() != WL_CONNECTED)
   Serial.print(".");
 }
 
-Serial.println("");
-Serial.println("WiFi connected..!");
-Serial.print("Got IP: ");  Serial.println(WiFi.localIP());
+  //Получение реального времени
+  pinMode(RTCPowerPin, OUTPUT);
+  digitalWrite(RTCPowerPin, HIGH);
+  RTC.squareWave(SQWAVE_NONE);
+  setSyncProvider(RTC.get);
+  //set the system time to 17h 35m on 22 March 2015
+  //setTime(17, 35, 0, 22, 3, 2015);
+  RTC.set(now());
+  pinMode(motorPin, OUTPUT);
+  digitalWrite(motorPin, LOW);
+  //инициализация контактный контакт подачи в качестве входного сигнала:
+  pinMode(feedPin, INPUT);
 
+  
+  pinMode(relayPin1, OUTPUT);// Указываем вывод RELAY как выход //cвет в аквариуме
+  digitalWrite(relayPin1, LOW);  
+   
+ /* pinMode(relay2,OUTPUT);// Указываем вывод RELAY как выход //cвет ультрафиолет
+  digitalWrite(relay2, LOW);   
+  
+  pinMode(relay3,OUTPUT);// Указываем вывод RELAY как выход //воздух растениям
+  digitalWrite(relay3, LOW);   
+
+  pinMode(relay4,OUTPUT);// Указываем вывод RELAY как выход //вода из аквариума к растениям
+  digitalWrite(relay4, LOW);   
+  
+  pinMode(relay5,OUTPUT);// Указываем вывод RELAY как выход //вода от растений в аквариум
+  digitalWrite(relay5, LOW);   
+
+  pinMode(relay6,OUTPUT);// Указываем вывод RELAY как выход //температура воды
+  digitalWrite(relay6, LOW);   
+ 
+  pinMode(relay7,OUTPUT);// Указываем вывод RELAY как выход //кормление рыб
+  digitalWrite(relay7, LOW);   
+*/
 Serial.println("");
 Serial.println("WiFi connected..!");
 Serial.print("Got IP: ");  Serial.println(WiFi.localIP());
@@ -75,26 +99,32 @@ server.onNotFound(handle_NotFound);
 
 server.begin();
 Serial.println("HTTP server started");
-
-
-clock.begin(); //включение часов.
-
-byte hour = getInt(compileTime, 0);
-
-byte minute = getInt(compileTime, 2);
-
-byte second = getInt(compileTime, 4); //получение времени.
-
-clock.fillByHMS(hour, minute, second); //подготовка для записывания в модуль времени.
-
-clock.setTime(); //происходит запись полученной информации во внутреннюю память, начало считывания времени.
-
 }
 
 void loop()
 
 {
- server.handleClient();
+   server.handleClient(); // подключение сервера 
+   
+  //digitalWrite(motorPin, LOW);
+  //digitalWrite(RTCPowerPin, HIGH); //Включение питания RTC 
+  //delay(50); //проверка 
+  
+  RTC.setAlarm(ALM1_MATCH_HOURS, 0, 0, 8, 0); //свет с 8 часов 
+  if(RTC.alarm(ALARM_1){
+   digitalWrite(relay1, HIGH);   
+   relaySTATE1 = HIGH;     
+  }
+  RTC.setAlarm(ALM2_MATCH_HOURS, 0, 0, 20, 0); //выключение света с 8 часов вечера
+   if(RTC.alarm(ALARM_2){
+    digitalWrite(relay1, LOW);
+    relaySTATE1 = LOW;   
+  }
+  
+  
+  //digitalWrite(RTCPowerPin, LOW); //Выключение питания RTC
+  //digitalWrite(RTCPowerPin, HIGH);
+  
 }
 
 void handle_OnConnect() //получение значений температуры
@@ -110,7 +140,7 @@ void handle_NotFound()// обработка ошибки 404
   server.send(404, "text/plain", "Not found");
 }
 
-String SendHTML(float tempSensor1,float tempSensor2,float tempSensor3)// верстка страницы
+String SendHTML(float tempSensor1)// верстка страницы
 {
   String ptr = "<!DOCTYPE html> <html>\n";
   ptr +="<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n";
@@ -127,6 +157,8 @@ String SendHTML(float tempSensor1,float tempSensor2,float tempSensor3)// вер�
   ptr +=tempSensor1;
   ptr +="&deg;C</p>";
   ptr +="&deg;C</p>";
+  ptr +="<button>Свет в аквариуме ";
+  ptr +="</button>\n";
   ptr +="</div>\n";
   ptr +="</body>\n";
   ptr +="</html>\n";
