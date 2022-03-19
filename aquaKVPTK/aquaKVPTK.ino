@@ -1,11 +1,13 @@
+
 //АКВАРИУМ ПРОЕКТ 
-
-
 #include <Wire.h>
 
 #include "DS3231.h" //нужно включить все необходимые библиотеки для работы с часами.
 
-#include <ESP8266WebServer.h> // подключение к сети
+#include <ESP8266WebServer.h> // подключение сервера 
+#include <ESP8266WiFi.h> // для потключения интернета 
+#include <FS.h> // для работы с файловой системой 
+#include <ESP8266FtpServer.h> // для работы с сервером 
 
 #include <OneWire.h>// температура 
 
@@ -24,36 +26,56 @@ float tempSensors;
 
 uint8_t sensor1[8] = { 0x28, 0xEE, 0xD5, 0x64, 0x1A, 0x16, 0x02, 0xEC  }; // температура 
 
-//подключение к интернету
-const char* ssid = "KVPTK_Guest";   // SSID
-const char* password = "YourPassword";  // пароль
-
-ESP8266WebServer server(80); 
-
 Serial.begin(115200);
 delay(100);
   
 sensors.begin(); 
 
-const int relayPin1 = D1;     // Пин к которому подключен реле
+const byte relayPin1 = D1;     // Пин к которому подключен реле
 int relaySTATE1 = LOW; // состояние реле 
+
+
+//подключение к интернету
+const char* ssid = "KVPTK_Guest";   // SSID
+const char* password = "YourPassword";  // пароль
+ESP8266WebServer HTTP(80); 
+FtpServer ftpSrv;
+
+
 
 void setup()
 
 {
+  pinMode(relayPin1, OUTPUT);// Указываем вывод RELAY как выход //cвет в аквариуме
+  digitalWrite(relayPin1, LOW);  
+  
+  Serial.begin(9600); // вывод данных на сервер 
 
-Serial.println("Connecting to ");
-Serial.println(ssid);
+  WiFi.softAP(ssid); // Создаем точку доступа 
 
-// подключиться к вашей локальной wi-fi сети
-WiFi.begin(ssid, password);
+  SPIFFS.begin();// инициализация работы с файловой системой 
+  HTTP.begin();// инициализация веб сервера 
+  ftpSrv.begin("relayPin1","relayPin1");// подняние фтп сервера 
 
-// проверить, выполнено ли подключение wi-fi сети
-while (WiFi.status() != WL_CONNECTED) 
-{
-  delay(1000);
-  Serial.print(".");
-}
+  Serial.print("\nMy IP connect via Web-Browser or FTP: ");
+  Serial.println(WiFi.softAPIP()); // вывод локального айпи 
+  Serial.println("\n");
+
+
+  //HTPP запросы 
+  
+  HTTP.on("/relay_switch", [] (){
+    HTTP.send(200, "text/plain", relay_switch()); 
+  });
+  HTTP.on("/relay_status", [] (){
+    HTTP.send(200, "text/plain", relayPin1_status()); 
+  });
+  HTTP.onNotFound([] (){
+    if(!handleFileRead(HTTP.uri()))
+    HTTP.send(404, "text/plain", "Not Found"); 
+  });
+
+
 
   //Получение реального времени
   pinMode(RTCPowerPin, OUTPUT);
@@ -69,8 +91,7 @@ while (WiFi.status() != WL_CONNECTED)
   pinMode(feedPin, INPUT);
 
   
-  pinMode(relayPin1, OUTPUT);// Указываем вывод RELAY как выход //cвет в аквариуме
-  digitalWrite(relayPin1, LOW);  
+
    
  /* pinMode(relay2,OUTPUT);// Указываем вывод RELAY как выход //cвет ультрафиолет
   digitalWrite(relay2, LOW);   
@@ -90,21 +111,17 @@ while (WiFi.status() != WL_CONNECTED)
   pinMode(relay7,OUTPUT);// Указываем вывод RELAY как выход //кормление рыб
   digitalWrite(relay7, LOW);   
 */
-Serial.println("");
-Serial.println("WiFi connected..!");
-Serial.print("Got IP: ");  Serial.println(WiFi.localIP());
 
-server.on("/", handle_OnConnect);
-server.onNotFound(handle_NotFound);
 
-server.begin();
-Serial.println("HTTP server started");
+
+
 }
 
 void loop()
 
 {
-   server.handleClient(); // подключение сервера 
+  HTTP.handleClient();//обработчик HTTP cобытий
+  ftpSrv.handleFTP();//обработчик фтп соединений 
    
   //digitalWrite(motorPin, LOW);
   //digitalWrite(RTCPowerPin, HIGH); //Включение питания RTC 
@@ -112,12 +129,12 @@ void loop()
   
   RTC.setAlarm(ALM1_MATCH_HOURS, 0, 0, 8, 0); //свет с 8 часов 
   if(RTC.alarm(ALARM_1){
-   digitalWrite(relay1, HIGH);   
+   digitalWrite(relayPin1, HIGH);   
    relaySTATE1 = HIGH;     
   }
   RTC.setAlarm(ALM2_MATCH_HOURS, 0, 0, 20, 0); //выключение света с 8 часов вечера
    if(RTC.alarm(ALARM_2){
-    digitalWrite(relay1, LOW);
+    digitalWrite(relayPin1, LOW);
     relaySTATE1 = LOW;   
   }
   
@@ -127,6 +144,56 @@ void loop()
   
 }
 
+//переключение реле 
+String relay_switch(){
+  byte state;
+  if(digitalRead(relayPin1))
+     state = 0;
+  else
+     state = 1;
+    digitalWrite(relayPin1,state);
+    return String(state);
+}
+
+// получение статуса реле 
+String relay_status(){ 
+  byte state;
+  if(digitalRead(relayPin1))
+     state = 1;
+  else
+     state = 0;
+    return String(state);
+}
+
+
+bool handleFileRead(String path){
+if(path.endsWith("/")) path += "index.html";
+String contentType = getContentType(path);
+if(SPIFFS.exists(path)){
+File file = SPIFFS.open(path,"r");
+size_t sent = HTTP.streamFile(file, contentType);
+file.close();
+return true;
+}
+return false;
+}
+
+String getContentType(String filename){
+if (filename.endsWith(".html")) return "text/html";
+else if (filename.endsWith(".css")) return "text/css";
+else if (filename.endsWith(".js")) return "application/javascript";
+else if (filename.endsWith(".png")) return "image/png";
+else if (filename.endsWith(".jpg")) return "image/jpeg";
+return "text/plain";
+
+
+}
+
+
+
+
+
+
 void handle_OnConnect() //получение значений температуры
 {
   sensors.requestTemperatures();
@@ -135,34 +202,6 @@ void handle_OnConnect() //получение значений температу
   server.send(200, "text/html", SendHTML(tempSensor1)); 
 }
 
-void handle_NotFound()// обработка ошибки 404
-{
-  server.send(404, "text/plain", "Not found");
-}
 
-String SendHTML(float tempSensor1)// верстка страницы
-{
-  String ptr = "<!DOCTYPE html> <html>\n";
-  ptr +="<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n";
-  ptr +="<title>ESP8266 Temperature Monitor</title>\n";
-  ptr +="<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}\n";
-  ptr +="body{margin-top: 50px;} h1 {color: #444444;margin: 50px auto 30px;}\n";
-  ptr +="p {font-size: 24px;color: #444444;margin-bottom: 10px;}\n";
-  ptr +="</style>\n";
-  ptr +="</head>\n";
-  ptr +="<body>\n";
-  ptr +="<div id=\"webpage\">\n";
-  ptr +="<h1>Аквариум</h1>\n";
-  ptr +="<p>Температура воды: ";
-  ptr +=tempSensor1;
-  ptr +="&deg;C</p>";
-  ptr +="&deg;C</p>";
-  ptr +="<button>Свет в аквариуме ";
-  ptr +="</button>\n";
-  ptr +="</div>\n";
-  ptr +="</body>\n";
-  ptr +="</html>\n";
-  return ptr;
-  
-}
+
 }
