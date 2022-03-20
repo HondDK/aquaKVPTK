@@ -65,10 +65,10 @@ void setup()
   //HTPP запросы 
   
   HTTP.on("/relay_switch", [] (){
-    HTTP.send(200, "text/plain", relay_switch()); 
+    HTTP.send(200, "text/plain", relay_switch(relayPin1)); 
   });
   HTTP.on("/relay_status", [] (){
-    HTTP.send(200, "text/plain", relayPin1_status()); 
+    HTTP.send(200, "text/plain", relayPin1_status(relayPin1)); 
   });
   HTTP.onNotFound([] (){
     if(!handleFileRead(HTTP.uri()))
@@ -145,20 +145,20 @@ void loop()
 }
 
 //переключение реле 
-String relay_switch(){
+String relay_switch(relayPin){
   byte state;
-  if(digitalRead(relayPin1))
+  if(digitalRead(relayPin))
      state = 0;
   else
      state = 1;
-    digitalWrite(relayPin1,state);
+    digitalWrite(relayPin,state);
     return String(state);
 }
 
 // получение статуса реле 
-String relay_status(){ 
+String relay_status(relayPin){ 
   byte state;
-  if(digitalRead(relayPin1))
+  if(digitalRead(relayPin))
      state = 1;
   else
      state = 0;
@@ -188,9 +188,6 @@ return "text/plain";
 
 
 }
-
-
-
 
 
 

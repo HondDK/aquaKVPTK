@@ -1,12 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aqua</title>
-</head>
-<body>
-    
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>aqua</title>
+		<style>
+			body {
+				text-align: center;
+				height: 100%;
+				margin: 0 auto;
+			}
+			input[type="button"] {
+				position: relative;
+				top: 50%;
+				margin-top: 20px;
+				border: 0;
+				background-color: transparent;
+				outline: 0;
+				display: inline-block;
+				width: 96px;
+				height: 96px;
+			}
+			.relay_on {
+				background-image: url("on.png");
+				background-position: 0px 0px;
+			}
+			.relay_off {
+				background-image: url("off.png");
+				background-position: 0px 0px;
+			}
+		</style>
+	</head>
+	<body>
+		<input class="" type="button" value="Освещение" id="relay_lighting" />
+		<script>
+			var relay = document.getElementById("relay_lighting");
+			function relay_state() {
+				var request = new XMLHttpRequest();
+				request.open("GET", "/relay_status", true);
+				request.onload = function () {
+					if (request.readyState == 4 && request.status == 200) {
+						var response = request.responseText;
+						relay_status = Number.parseInt(response);
+						if (relay_status == 0) {
+							relay.classList.add("relay_off");
+						} else {
+							relay.classList.add("relay_on");
+						}
+					}
+				};
+				request.send();
+			}
+			function relay_inverse() {
+				var request = new XMLHttpRequest();
+				request.open("GET", "/relay_switch", false);
+				request.send();
+				if (request.readyState == 4 && request.status == 200) {
+					var response = request.responseText;
+					if (response == "0") {
+						relay.classList.remove("relay_on");
+						relay.classList.add("relay_off");
+					} else {
+						relay.classList.remove("relay_off");
+						relay.classList.add("relay_on");
+					}
+				}
+			}
+			document.addEventListener("DOMContentLoaded", relay_state);
+			relay.addEventListener("click", relay_inverse);
+		</script>
+	</body>
 </html>
