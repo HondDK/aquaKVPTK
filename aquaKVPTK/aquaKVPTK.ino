@@ -122,7 +122,7 @@ void loop()
 {
   HTTP.handleClient();//обработчик HTTP cобытий
   ftpSrv.handleFTP();//обработчик фтп соединений 
-   
+  temp();
   //digitalWrite(motorPin, LOW);
   //digitalWrite(RTCPowerPin, HIGH); //Включение питания RTC 
   //delay(50); //проверка 
@@ -191,7 +191,7 @@ return "text/plain";
 
 
 
-void handle_OnConnect() //получение значений температуры
+void temp() //получение значений температуры
 {
   sensors.requestTemperatures();
   tempSensor1 = sensors.getTempC(sensor1); // Получить значение температуры
