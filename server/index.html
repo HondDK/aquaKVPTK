@@ -31,6 +31,12 @@
 				background-image: url("off.png");
 				background-position: 0px 0px;
 			}
+			.temp {
+				font-family: arial, sans-serif;
+				border: 0;
+				text-align: center;
+				font-size: 25px;
+			}
 		</style>
 	</head>
 	<body>
@@ -64,6 +70,7 @@
 			value="Вода в аквариум"
 			id="relay_water_in"
 		/>
+		<input type="text" readonly id="auqa_temp" value="" class="temp" />
 		<input
 			class="relay_off"
 			type="button"
@@ -73,6 +80,8 @@
 		<input class="relay_off" type="button" value="Освещение" id="relay_food" />
 		<script>
 			var relay = document.getElementById("relay_lighting");
+			var temp = document.getElementById("auqa_temp");
+
 			function relay_state() {
 				var request = new XMLHttpRequest();
 				request.open("GET", "/relay_status", true);
@@ -89,6 +98,7 @@
 				};
 				request.send();
 			}
+
 			function relay_inverse() {
 				var request = new XMLHttpRequest();
 				request.open("GET", "/relay_switch", false);
@@ -104,7 +114,19 @@
 					}
 				}
 			}
+
+			function auqa_temp() {
+				var request = new XMLHttpRequest();
+				request.open("GET", "/auqa_temp", false);
+				request.send();
+				if (request.status == 200) {
+					var response = request.responseText;
+					temp.value = response;
+				}
+			}
+
 			document.addEventListener("DOMContentLoaded", relay_state);
+			document.addEventListener("DOMContentLoaded", auqa_temp);
 			relay.addEventListener("click", relay_inverse);
 		</script>
 	</body>
