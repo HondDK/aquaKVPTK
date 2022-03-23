@@ -98,12 +98,48 @@ void setup()
 
     //HTPP запросы 
     
-    HTTP.on("/relay_switch", [] (){
-      HTTP.send(200, "text/plain", relay_switch()); 
+    HTTP.on("/relay_switch_lighting", [] (){                              // свет
+     HTTP.send(200, "text/plain", relay_switch_lighting()); 
+      });
+      HTTP.on("/relay_status_lighting", [] (){
+        HTTP.send(200, "text/plain", relay_status_lighting()); 
+      });
+
+     HTTP.on("/relay_switch_lighting_purple", [] (){                        // свет ультрафи
+      HTTP.send(200, "text/plain", relay_switch_lighting_purple()); 
     });
-    HTTP.on("/relay_status", [] (){
-      HTTP.send(200, "text/plain", relay_status()); 
+    HTTP.on("/relay_status_lighting_purple", [] (){
+      HTTP.send(200, "text/plain", relay_status_lighting_purple()); 
     });
+
+     HTTP.on("/relay_switch_air", [] (){                                    // воздух
+      HTTP.send(200, "text/plain", relay_switch_air()); 
+    });
+    HTTP.on("/relay_status_air", [] (){
+      HTTP.send(200, "text/plain", relay_status_air()); 
+    });
+    
+    HTTP.on("/relay_switch_water_out", [] (){                               // вода из аквариума
+      HTTP.send(200, "text/plain", relay_switch_air()); 
+    });
+    HTTP.on("/relay_status_water_out", [] (){
+      HTTP.send(200, "text/plain", relay_status_air()); 
+    });
+
+     HTTP.on("/relay_switch_water_in", [] (){                               // вода в аквариум
+      HTTP.send(200, "text/plain", relay_switch_air()); 
+    });
+    HTTP.on("/relay_status_water_in", [] (){
+      HTTP.send(200, "text/plain", relay_status_air()); 
+    });
+
+     HTTP.on("/relay_switch_temp", [] (){                                   // обогреватель
+      HTTP.send(200, "text/plain", relay_switch_air()); 
+    });
+    HTTP.on("/relay_status_temp", [] (){
+      HTTP.send(200, "text/plain", relay_status_air()); 
+    });
+
      HTTP.on("/aqua_temp()", [] (){
       HTTP.send(200, "text/plain", aqua_temp()); 
     });
@@ -235,7 +271,7 @@ void loop()
 
 
     //переключение реле 
-    String relay_switch(){
+    String relay_switch_lighting(){        // свет
       byte state;
       if(digitalRead(relayPin1))
          state = 0;
@@ -246,7 +282,7 @@ void loop()
     }
     
     // получение статуса реле 
-    String relay_status(){ 
+    String relay_status_lighting(){       // свет
       byte state;
       if(digitalRead(relayPin1))
          state = 1;
@@ -255,6 +291,110 @@ void loop()
         return String(state);
     }
     
+    //переключение реле 
+    String relay_switch_lighting_purple(){  // свет ультрафи
+      byte state;
+      if(digitalRead(relayPin2))
+         state = 0;
+      else
+         state = 1;
+        digitalWrite(relayPin2,state);
+        return String(state);
+    }
+    
+    // получение статуса реле 
+    String relay_status_lighting_purple(){  // свет ультрафи
+      byte state;
+      if(digitalRead(relayPin2))
+         state = 1;
+      else
+         state = 0;
+        return String(state);
+    }
+    
+    //переключение реле 
+    String relay_switch_air(){              // воздух
+      byte state;
+      if(digitalRead(relayPin3))
+         state = 0;
+      else
+         state = 1;
+        digitalWrite(relayPin3,state);
+        return String(state);
+    }
+    
+    // получение статуса реле 
+    String relay_status_air(){              // воздух
+      byte state;
+      if(digitalRead(relayPin3))
+         state = 1;
+      else
+         state = 0;
+        return String(state);
+    }
+
+    String relay_switch_water_out(){              // вода из аквариума
+      byte state;
+      if(digitalRead(relayPin4))
+         state = 0;
+      else
+         state = 1;
+        digitalWrite(relayPin4,state);
+        return String(state);
+    }
+    
+    // получение статуса реле 
+    String relay_status_water_out(){              // вода из аквариума
+      byte state;
+      if(digitalRead(relayPin4))
+         state = 1;
+      else
+         state = 0;
+        return String(state);
+    }
+
+      String relay_switch_water_in(){              // вода в аквариум
+      byte state;
+      if(digitalRead(relayPin5))
+         state = 0;
+      else
+         state = 1;
+        digitalWrite(relayPin5,state);
+        return String(state);
+    }
+    
+    // получение статуса реле 
+    String relay_status_water_in(){              // вода в аквариум
+      byte state;
+      if(digitalRead(relayPin5))
+         state = 1;
+      else
+         state = 0;
+        return String(state);
+    }
+
+
+       String relay_switch_temp(){              // обогреватель
+      byte state;
+      if(digitalRead(relayPin7))
+         state = 0;
+      else
+         state = 1;
+        digitalWrite(relayPin7,state);
+        return String(state);
+    }
+    
+    // получение статуса реле 
+    String relay_status_temp(){              // обогреватель
+      byte state;
+      if(digitalRead(relayPin7))
+         state = 1;
+      else
+         state = 0;
+        return String(state);
+    }
+
+  
     
     bool handleFileRead(String path){
     if(path.endsWith("/")) path += "index.html";
