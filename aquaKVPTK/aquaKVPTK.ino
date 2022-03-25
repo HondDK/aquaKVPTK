@@ -1,20 +1,28 @@
 
 
+
     //АКВАРИУМ ПРОЕКТ 
 
 
     #include <DallasTemperature.h>                            // для температуры
     #include <OneWire.h>                                      // для температуры
-    
+    #include <Wire.h>                                         // Подключаем библиотеку Wire для работы с шиной I2C
+    #include <iarduino_RTC.h>                                 // библиотека с часами RTC https://wiki.iarduino.ru/page/chasy-realnogo-vremeni-rtc-trema-modul/
     
     #include <ESP8266WebServer.h>                             // подключение сервера 
     #include <ESP8266WiFi.h>                                  // для потключения интернета 
+    
+   
     #include <FS.h>                                           // для работы с файловой системой 
     #include <ESP8266FtpServer.h>                             // для работы с сервером 
+
+    //подключение к интернету
+    const char* ssid     = "KVPTK_AQUA";
+    const char* password = "12345678";
+    ESP8266WebServer HTTP(80); 
+    FtpServer ftpSrv;
     
-    #include <iarduino_RTC.h>                                 // библиотека с часами RTC https://wiki.iarduino.ru/page/chasy-realnogo-vremeni-rtc-trema-modul/
-    
-    iarduino_RTC RTC(RTC_DS3231);  
+    iarduino_RTC watch(RTC_DS3231);  
     uint8_t D, M, Y, h, m, s, W;    
     
     //  Определяем системное время:                           // Время загрузки скетча.
@@ -28,17 +36,17 @@
     
     
     
-    const int oneWireBus = D7;     // температура подключен к пину
-    OneWire oneWire(oneWireBus);
-    DallasTemperature sensors(&oneWire);
+    //const int oneWireBus = D8;     // температура подключен к пину
+   // OneWire oneWire(oneWireBus);
+    //DallasTemperature sensors(&oneWire);
     
-    const byte relayPin1 = D1;     // Пин к которому подключен реле Свет аквариума
-    const byte relayPin2 = D2;     // Свет ультрафи 
-    const byte relayPin3 = D3;     // Воздух к растениям
-    const byte relayPin4 = D4;     // Вода из аквариума к растениям 
-    const byte relayPin5 = D5;     // Вода от растений в аквариум
-    const byte relayPin6 = D6;     // Кормушка рыб
-    const byte relayPin7 = D6;     // Обогреватель 
+    const byte relayPin1 = D0;     // Пин к которому подключен реле Свет аквариума
+    const byte relayPin2 = D1;     // Свет ультрафи 
+    const byte relayPin3 = D4;     // Воздух к растениям
+    const byte relayPin4 = D5;     // Вода из аквариума к растениям 
+    const byte relayPin5 = D6;     // Вода от растений в аквариум
+    const byte relayPin6 = D7;     // Кормушка рыб
+    const byte relayPin7 = D8;     // Обогреватель 
     
     int relaySTATE1 = LOW;         // состояние реле Свет аквариума
     int relaySTATE2 = LOW;         // состояние реле ультрафи 
@@ -50,23 +58,27 @@
     
     float aquaTEMP = 21.00;        // Какая температура нужна в аквариуме
     
-    //подключение к интернету
-    const char* ssid = "KVPTK_Guest";   // SSID
-    const char* password = "YourPassword";  // пароль
-    ESP8266WebServer HTTP(80); 
-    FtpServer ftpSrv;
-    
-
+ 
 
 void setup()
 
 {
     Serial.begin(9600);                                   // Инициируем передачу данных в монитор последовательного порта
     
-    RTC.begin();                                          // Инициируем RTC модуль
-    RTC.settime(i[0],i[1],i[2],i[3],i[4],i[5]);           // Устанавливаем время в модуль: i[0] сек, i[1] мин, i[2] час, i[3] день, i[4] месяц, i[5] год, без указания дня недели.
+    WiFi.softAP(ssid, password);                       // Создаем точку доступа 
+    
+    
+    HTTP.begin();                            // инициализация веб сервера 
+    ftpSrv.begin("relay","relay");   // подняние фтп сервера 
+    SPIFFS.begin();                          // инициализация работы с файловой системой 
+    Serial.print("\nMy IP connect via Web-Browser or FTP: ");
+    Serial.println(WiFi.softAPIP());         // вывод локального айпи 
+    Serial.println("\n");
+    
+    watch.begin();                                          // Инициируем RTC модуль
+    watch.settime(i[0],i[1],i[2],i[3],i[4],i[5]);           // Устанавливаем время в модуль: i[0] сек, i[1] мин, i[2] час, i[3] день, i[4] месяц, i[5] год, без указания дня недели.
 //  RTC.settime(i[0],i[1],i[2],i[3],i[4],i[5], 2);        // Можно установить время с указанием дня недели, где последний параметр, это день недели (указывается вручную) в формате: 0-воскресенье, 1-понедельник, ... , 6-суббота
-
+    //watch.settime(0,17,14,25,3,22,5);      
   
     pinMode(relayPin1, OUTPUT);               // Указываем вывод RELAY как выход //cвет в аквариуме
     pinMode(relayPin2, OUTPUT);               // Свет ультрафи 
@@ -76,24 +88,17 @@ void setup()
     pinMode(relayPin6, OUTPUT);               // Кормушка рыб
     pinMode(relayPin7, OUTPUT);               // Обогреватель
     
-    digitalWrite(relayPin1, LOW); 
-    digitalWrite(relayPin2, LOW);  
-    digitalWrite(relayPin3, LOW);  
-    digitalWrite(relayPin4, LOW);  
-    digitalWrite(relayPin5, LOW);  
-    digitalWrite(relayPin6, LOW);   
-    digitalWrite(relayPin7, LOW);  
+    digitalWrite(relayPin1, HIGH); 
+    digitalWrite(relayPin2, HIGH);  
+    digitalWrite(relayPin3, 1);  
+    digitalWrite(relayPin4, HIGH);  
+    digitalWrite(relayPin5, HIGH);  
+    digitalWrite(relayPin6, HIGH);   
+    digitalWrite(relayPin7, HIGH);  
      
-    sensors.begin(); // температура
+//    sensors.begin(); // температура
  
-    WiFi.softAP(ssid);                       // Создаем точку доступа 
-    SPIFFS.begin();                          // инициализация работы с файловой системой 
-    HTTP.begin();                            // инициализация веб сервера 
-    ftpSrv.begin("relayPin1","relayPin1");   // подняние фтп сервера 
-  
-    Serial.print("\nMy IP connect via Web-Browser or FTP: ");
-    Serial.println(WiFi.softAPIP());         // вывод локального айпи 
-    Serial.println("\n");
+    
   
 
     //HTPP запросы 
@@ -140,9 +145,9 @@ void setup()
       HTTP.send(200, "text/plain", relay_status_air()); 
     });
 
-     HTTP.on("/aqua_temp()", [] (){
-      HTTP.send(200, "text/plain", aqua_temp()); 
-    });
+    // HTTP.on("/aqua_temp()", [] (){
+     // HTTP.send(200, "text/plain", aqua_temp()); 
+   // });
     HTTP.onNotFound([] (){
       if(!handleFileRead(HTTP.uri()))
       HTTP.send(404, "text/plain", "Not Found"); 
@@ -157,28 +162,26 @@ void loop()
     HTTP.handleClient();                                    // обработчик HTTP cобытий
     ftpSrv.handleFTP();                                     // обработчик фтп соединений 
    
-    sensors.requestTemperatures();                          // получение температуры  
-    float temperatureC = sensors.getTempCByIndex(0);        // получение температуры 
+    //sensors.requestTemperatures();                          // получение температуры  
+    //float temperatureC = sensors.getTempCByIndex(0);        // получение температуры 
   
-  
-    if(millis()%1000==0){                                   // Если прошла 1 секунда
-          Serial.println(RTC.gettime("d-m-Y, H:i:s, D"));   // Выводим время в монитор порта, одной строкой
-          delay(2);                                         // Приостанавливаем скетч на 2 мс.
-      }
+ 
       
    if(millis()%1000==0){                                  // если прошла 1 секунда
-        RTC.gettime();                                    // Считываем текущее время из модуля.
-        D = RTC.day;                                      // Получаем текущий день месяца 1-31.
-        M = RTC.month;                                    // Получаем текущий месяц       1-12.
-        Y = RTC.year;                                     // Получаем текущий год         0-99.
-        h = RTC.Hours;                                    // Получаем текущие часы        0-23.
-        m = RTC.minutes;                                  // Получаем текущие минуты      0-59.
-        s = RTC.seconds;                                  // Получаем текущие секунды     0-59.
-        W = RTC.weekday;                                  // Получаем текущий день недели 0-6.
+        watch.gettime();                                    // Считываем текущее время из модуля.
+        D = watch.day;                                      // Получаем текущий день месяца 1-31.
+        M = watch.month;                                    // Получаем текущий месяц       1-12.
+        Y = watch.year;                                     // Получаем текущий год         0-99.
+        h = watch.Hours;                                    // Получаем текущие часы        0-23.
+        m = watch.minutes;                                  // Получаем текущие минуты      0-59.
+        s = watch.seconds;                                  // Получаем текущие секунды     0-59.
+        W = watch.weekday;                                  // Получаем текущий день недели 0-6.
         Serial.println((String) D+"-"+M+"-"+Y+", "+h+":"+m+":"+s+", "+W); // Выводим время в монитор порта, одной строкой.
-        delay(2);                                         // приостанавливаем скетч на 2 мс.
     }
-   
+
+
+    
+  /* 
     //RTC.setAlarm(ALM1_MATCH_HOURS, 0, 0, 8, 0);           //свет с 8 часов + ульрафи
     if(h == 8 && m == 0){
      digitalWrite(relayPin1, HIGH);   
@@ -241,16 +244,16 @@ void loop()
     //Кормушка
     if(h == 8 && m == 1){
       digitalWrite(relayPin6, HIGH);    
-      delay(5000);
+      //delay(5000);
       digitalWrite(relayPin6, LOW);    
       }
    if(h == 18 && m == 1){
       digitalWrite(relayPin6, HIGH);    
-      delay(5000);
+      //delay(5000);
       digitalWrite(relayPin6, LOW);    
       }
   
-
+/*
     //Температура 
     if(round(aquaTEMP) < round(temperatureC)){
       digitalWrite(relayPin7, HIGH);   
@@ -260,14 +263,14 @@ void loop()
       digitalWrite(relayPin7, LOW);   
       relaySTATE7 = LOW;  
     }
-    
+    */
   }
 
     //Температура на сервер
-    String aqua_temp(){
-      float temperatureC = sensors.getTempCByIndex(0);        // получение температуры 
-      return String (temperatureC);
-    }
+    //String aqua_temp(){
+     // float temperatureC = sensors.getTempCByIndex(0);        // получение температуры 
+     // return String (temperatureC);
+  //  }
 
 
     //переключение реле 
