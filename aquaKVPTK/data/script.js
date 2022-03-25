@@ -185,9 +185,9 @@ function relay_state_temp() {
 			var response = request.responseText;
 			relay_status = Number.parseInt(response);
 			if (relay_status == 0) {
-				relay_water_in.classList.add("relay_off");
+				relay_temp.classList.add("relay_off");
 			} else {
-				relay_water_in.classList.add("relay_on");
+				relay_temp.classList.add("relay_on");
 			}
 		}
 	};
@@ -201,11 +201,11 @@ function relay_inverse_temp() {
 	if (request.readyState == 4 && request.status == 200) {
 		var response = request.responseText;
 		if (response == "0") {
-			relay_water_in.classList.remove("relay_on");
-			relay_water_in.classList.add("relay_off");
+			relay_temp.classList.remove("relay_on");
+			relay_temp.classList.add("relay_off");
 		} else {
-			relay_water_in.classList.remove("relay_off");
-			relay_water_in.classList.add("relay_on");
+			relay_temp.classList.remove("relay_off");
+			relay_temp.classList.add("relay_on");
 		}
 	}
 }

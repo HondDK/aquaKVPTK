@@ -8,19 +8,24 @@
     #include <OneWire.h>                                      // для температуры
     #include <Wire.h>                                         // Подключаем библиотеку Wire для работы с шиной I2C
     #include <iarduino_RTC.h>                                 // библиотека с часами RTC https://wiki.iarduino.ru/page/chasy-realnogo-vremeni-rtc-trema-modul/
+    #include <ESP8266SSDP.h>   
     
     #include <ESP8266WebServer.h>                             // подключение сервера 
     #include <ESP8266WiFi.h>                                  // для потключения интернета 
     
    
     #include <FS.h>                                           // для работы с файловой системой 
-    #include <ESP8266FtpServer.h>                             // для работы с сервером 
+    //#include <ESP8266FtpServer.h>                             // для работы с сервером 
 
+    String AP       = "aboba";           // Здесь храним название точки доступа (роутера), к которой будем подключаться
+    String PASSWORD = "222212003D@#";       // Здесь храним пароль для подключения к точке доступа (роутеру)
+
+    String SSDP_Name = "AQUA_KVPTK";          // Здесь определяем название устройства в сетевом окружении
     //подключение к интернету
-    const char* ssid     = "KVPTK_AQUA";
-    const char* password = "12345678";
+    //const char* ssid     = "KVPTK_AQUA";
+    //const char* password = "12345678";
     ESP8266WebServer HTTP(80); 
-    FtpServer ftpSrv;
+   // FtpServer ftpSrv;
     
     iarduino_RTC watch(RTC_DS3231);  
     uint8_t D, M, Y, h, m, s, W;    
@@ -65,12 +70,16 @@ void setup()
 {
     Serial.begin(9600);                                   // Инициируем передачу данных в монитор последовательного порта
     
-    WiFi.softAP(ssid, password);                       // Создаем точку доступа 
+    //WiFi.softAP(ssid, password);                       // Создаем точку доступа 
     
-    
-    HTTP.begin();                            // инициализация веб сервера 
-    ftpSrv.begin("relay","relay");   // подняние фтп сервера 
-    SPIFFS.begin();                          // инициализация работы с файловой системой 
+    WiFi.mode(WIFI_STA);                      // Определяем режим работы Wi-Fi модуля в режиме клиента
+    WiFi.begin(AP.c_str(), PASSWORD.c_str()); // Подключаемся к точке доступа (роутеру)
+    HTTP.begin();                             // Инициализируем Web-сервер
+    SPIFFS.begin();                           // Инициализируем файловую систему
+    SSDP_init();                              // Вызываем функцию инициализации SSDP (функция описана ниже)
+    //HTTP.begin();                            // инициализация веб сервера 
+    //ftpSrv.begin("relay","relay");   // подняние фтп сервера 
+    //SPIFFS.begin();                          // инициализация работы с файловой системой 
     Serial.print("\nMy IP connect via Web-Browser or FTP: ");
     Serial.println(WiFi.softAPIP());         // вывод локального айпи 
     Serial.println("\n");
@@ -90,7 +99,7 @@ void setup()
     
     digitalWrite(relayPin1, HIGH); 
     digitalWrite(relayPin2, HIGH);  
-    digitalWrite(relayPin3, 1);  
+    digitalWrite(relayPin3, HIGH);  
     digitalWrite(relayPin4, HIGH);  
     digitalWrite(relayPin5, HIGH);  
     digitalWrite(relayPin6, HIGH);   
@@ -160,7 +169,7 @@ void loop()
 {
     
     HTTP.handleClient();                                    // обработчик HTTP cобытий
-    ftpSrv.handleFTP();                                     // обработчик фтп соединений 
+    //ftpSrv.handleFTP();                                     // обработчик фтп соединений 
    
     //sensors.requestTemperatures();                          // получение температуры  
     //float temperatureC = sensors.getTempCByIndex(0);        // получение температуры 
@@ -181,7 +190,7 @@ void loop()
 
 
     
-  /* 
+  /*
     //RTC.setAlarm(ALM1_MATCH_HOURS, 0, 0, 8, 0);           //свет с 8 часов + ульрафи
     if(h == 8 && m == 0){
      digitalWrite(relayPin1, HIGH);   
@@ -398,7 +407,7 @@ void loop()
     }
 
   
-    
+    /*
     bool handleFileRead(String path){
     if(path.endsWith("/")) path += "index.html";
     String contentType = getContentType(path);
@@ -410,7 +419,22 @@ void loop()
     }
     return false;
     }
-    
+*/
+  bool handleFileRead(String path){                       // Функция работы с файловой системой
+  if(path.endsWith("/")) path += "index.html";           // Если устройство вызывается по корневому адресу, то должен вызываться файл index.htm (добавляем его в конец адреса)
+  String contentType = getContentType(path);            // С помощью функции getContentType (описана ниже) определяем по типу файла (в адресе обращения) какой заголовок необходимо возвращать по его вызову
+  String pathWithGz = path + ".gz";                     // Заводим еще один путь с адресом заархивированной версии файла из адреса обращения
+  if(SPIFFS.exists(pathWithGz) || SPIFFS.exists(path)){ // Если в файловой системе существует заархивированный или простой файл по адресу обращения
+    if(SPIFFS.exists(pathWithGz))                       //  Если существует заархивированный файл,
+      path += ".gz";                                    //    то добавляем в адрес обращения окончание, указывающее на архив
+    File file = SPIFFS.open(path, "r");                 //  Открываем файл для чтения
+    size_t sent = HTTP.streamFile(file, contentType);   //  Выводим содержимое файла по HTTP, указывая заголовок типа содержимого contentType
+    file.close();                                       //  Закрываем файл
+    return true;                                        //  Завершаем выполнение функции, возвращая результатом ее исполнения true (истина)
+  }
+  return false;                                         // Завершаем выполнение функции, возвращая результатом ее исполнения false (если не обработалось предыдущее условие)
+}
+
     String getContentType(String filename){
     if (filename.endsWith(".html")) return "text/html";
     else if (filename.endsWith(".css")) return "text/css";
@@ -419,5 +443,22 @@ void loop()
     else if (filename.endsWith(".jpg")) return "image/jpeg";
     return "text/plain";
     
-    
     }
+
+    void SSDP_init(void) {                                                  // Функция формирующая описательные свойства устройства для его обнаружения в сетевом окружении
+  HTTP.on("/description.xml", HTTP_GET, []() {                          // Если происходит обращение к файлу /description.xml в корне устройства
+    SSDP.schema(HTTP.client());                                         // Создаем SSDP-схему описания устройства
+  });
+  SSDP.setDeviceType("upnp:rootdevice");                                // Тип устройства 
+  SSDP.setSchemaURL("description.xml");                                 // Файл с описанием
+  SSDP.setHTTPPort(80);                                                 // Порт работы с HTTP
+  SSDP.setName(SSDP_Name);                                              // Нзвание устройства в сетевом окружении
+  SSDP.setSerialNumber(ESP.getChipId());                                // Серийный номер (для заполнения используем ID чипа ESP)
+  SSDP.setURL("/");                                                     // Адрес по которому производится обращение к устройству при инициализации подключения
+  SSDP.setModelName(SSDP_Name);                                         // Название модели устройства
+  SSDP.setModelNumber("000000000001");                                  // Номер модели
+  SSDP.setModelURL("http://iomoio.ru");                                 // Страница с описанием данной модели в Интернет
+  SSDP.setManufacturer("IOMOIO");                                       // Производитель
+  SSDP.setManufacturerURL("http://iomoio.ru");                          // Адрес сайта производителя
+  SSDP.begin();                                                         // Отдаем сформированную SSDP-схему описания устройства
+}
