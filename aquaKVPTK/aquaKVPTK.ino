@@ -20,21 +20,24 @@
     String PASSWORD = "222212003D@#";       // Здесь храним пароль для подключения к точке доступа (роутеру)
     String SSDP_Name = "AQUA_KVPTK";          // Здесь определяем название устройства в сетевом окружении
 
-    
-    
-    
     #include <iarduino_RTC.h>                                 // библиотека с часами RTC https://wiki.iarduino.ru/page/chasy-realnogo-vremeni-rtc-trema-modul/
     iarduino_RTC watch(RTC_DS3231);  
   
-                                                             //
+                                                             
     //  Определяем системное время:                           // Время загрузки скетча.
     const char* strM="JanFebMarAprMayJunJulAugSepOctNovDec";  // Определяем массив всех вариантов текстового представления текущего месяца.
     const char* sysT=__TIME__;                                // Получаем время компиляции скетча в формате "SS:MM:HH".
     const char* sysD=__DATE__;                                // Получаем дату  компиляции скетча в формате "MMM:DD:YYYY", где МММ - текстовое представление текущего месяца, например: Jul.
     //  Парсим полученные значения sysT и sysD в массив i:    // Определяем массив «i» из 6 элементов типа int, содержащий следующие значения: секунды, минуты, часы, день, месяц и год компиляции скетча.
     const int i[6] {(sysT[6]-48)*10+(sysT[7]-48), (sysT[3]-48)*10+(sysT[4]-48), (sysT[0]-48)*10+(sysT[1]-48), (sysD[4]-48)*10+(sysD[5]-48), ((int)memmem(strM,36,sysD,3)+3-(int)&strM[0])/3, (sysD[9]-48)*10+(sysD[10]-48)};
+
     
+    const long utcOffsetInSeconds = 21600; // устанавливаем часовой пояс
+    WiFiUDP ntpUDP;
+    NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);//берем время с интернета
+    char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     
+  
     //const int oneWireBus = D8;     // температура подключен к пину
    // OneWire oneWire(oneWireBus);
     //DallasTemperature sensors(&oneWire);
@@ -55,14 +58,38 @@
     int relaySTATE6 = LOW;         // Кормушка рыб
     int relaySTATE7 = LOW;         // Обогреватель 
     
-    float aquaTEMP = 21.00;        // Какая температура нужна в аквариуме
+   
+
+
+    int lighting_hours;            // Свет аквариума таймер
+    int lighting_min;
     
-    const long utcOffsetInSeconds = 21600;
-    WiFiUDP ntpUDP;
-    NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
-    char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    int lighting_purple_hours;     // ультрафи  таймер
+    int lighting_purple_min;
+    
+    int air_hours;                 // Воздух к растениям таймер
+    int air_min;
+    
+    int water_out_hours;           // Вода из аквариума к растениям таймер
+    int water_out_min;
+    
+    int water_in_hours;            // Вода от растений в аквариум таймер
+    int water_in_min;
+
+    int food_hours;                // Кормушка рыб таймер
+    int food_min;
+ 
+    float aquaTEMP = 21.00;        // Какая температура нужна в аквариуме
+
+
+
+
+
+
+
     
     ESP8266WebServer HTTP(80); 
+    
 void setup()
 
 {
@@ -74,9 +101,8 @@ void setup()
     HTTP.begin();                               // Инициализируем Web-сервер
     SPIFFS.begin();                             // Инициализируем файловую систему
     SSDP_init();                                 // Вызываем функцию инициализации SSDP (функция описана ниже)
-    //HTTP.begin();                              // инициализация веб сервера 
-    //ftpSrv.begin("relay","relay");            // подняние фтп сервера 
-    //SPIFFS.begin();                              // инициализация работы с файловой системой 
+    
+                              
     Serial.print("\nMy IP connect via Web-Browser or FTP: ");
     Serial.println(WiFi.softAPIP());               // вывод локального айпи 
     Serial.println("\n");
@@ -127,32 +153,34 @@ void setup()
     });
     
     HTTP.on("/relay_switch_water_out", [] (){                               // вода из аквариума
-      HTTP.send(200, "text/plain", relay_switch_air()); 
+      HTTP.send(200, "text/plain", relay_switch_water_out()); 
     });
     HTTP.on("/relay_status_water_out", [] (){
-      HTTP.send(200, "text/plain", relay_status_air()); 
+      HTTP.send(200, "text/plain", relay_status_water_out()); 
     });
 
      HTTP.on("/relay_switch_water_in", [] (){                               // вода в аквариум
-      HTTP.send(200, "text/plain", relay_switch_air()); 
+      HTTP.send(200, "text/plain", relay_switch_water_in()); 
     });
     HTTP.on("/relay_status_water_in", [] (){
-      HTTP.send(200, "text/plain", relay_status_air()); 
+      HTTP.send(200, "text/plain", relay_status_water_in()); 
     });
 
      HTTP.on("/relay_switch_temp", [] (){                                   // обогреватель
-      HTTP.send(200, "text/plain", relay_switch_air()); 
+      HTTP.send(200, "text/plain", relay_switch_temp()); 
     });
     HTTP.on("/relay_status_temp", [] (){
-      HTTP.send(200, "text/plain", relay_status_air()); 
+      HTTP.send(200, "text/plain", relay_status_temp()); 
     });
 
     // HTTP.on("/aqua_temp", [] (){
      // HTTP.send(200, "text/plain", aqua_temp()); 
    // });
+   
      HTTP.on("/status_time", [] (){
       HTTP.send(200, "text/plain", status_time()); 
     });
+    
     HTTP.onNotFound([] (){
       if(!handleFileRead(HTTP.uri()))
       HTTP.send(404, "text/plain", "Not Found"); 
@@ -168,38 +196,34 @@ void loop()
 {
     
     HTTP.handleClient();                                    // обработчик HTTP cобытий
-    //ftpSrv.handleFTP();                                     // обработчик фтп соединений 
-   
+    timeClient.update();                                    // для получения времени с инернета
+    
     //sensors.requestTemperatures();                          // получение температуры  
     //float temperatureC = sensors.getTempCByIndex(0);        // получение температуры 
   
- 
-    timeClient.update();
-    watch.settime(timeClient.getSeconds(),timeClient.getMinutes(),timeClient.getHours());   // Устанавливаем время в модуль: i[0] сек, i[1] мин, i[2] час, i[3] день, i[4] месяц, i[5] год, без указания дня недели.      
+    
+    watch.settime(timeClient.getSeconds(),timeClient.getMinutes(),timeClient.getHours());   // Устанавливаем время в модуль(взятое с интернета): i[0] сек, i[1] мин, i[2] час, i[3] день, i[4] месяц, i[5] год, без указания дня недели.      
            
    if(millis()%1000==0){                                  // если прошла 1 секунда
-       Serial.println(watch.gettime("d-m-Y, H:i:s, D")); // 
-        Serial.print(daysOfTheWeek[timeClient.getDay()]);
-        Serial.print(", ");
-        Serial.print(timeClient.getHours());
-        Serial.print(":");
-        Serial.print(timeClient.getMinutes());
-        Serial.print(":");
-        Serial.println(timeClient.getSeconds());
+       Serial.println(watch.gettime("d-m-Y, H:i:s, D"));  // вывод времени на ds3231
+       
+        Serial.print(daysOfTheWeek[timeClient.getDay()]); // вывод времени с интернета
+        Serial.print(", ");                               // вывод времени с интернета
+        Serial.print(timeClient.getHours());              // вывод времени с интернета
+        Serial.print(":");                                // вывод времени с интернета
+        Serial.print(timeClient.getMinutes());            // вывод времени с интернета
+        Serial.print(":");                                // вывод времени с интернета
+        Serial.println(timeClient.getSeconds());          // вывод времени с интернета
     }
 
-      
-
-    
-      
-  /*
-    //RTC.setAlarm(ALM1_MATCH_HOURS, 0, 0, 8, 0);           //свет с 8 часов + ульрафи
-    if(h == 8 && m == 0){
+   //Установка таймеров
+   // освещение
+    if(watch.Hours == 8 && watch.minutes == 0){
      digitalWrite(relayPin1, HIGH);   
      relaySTATE1 = HIGH;     
     }
-   // RTC.setAlarm(ALM2_MATCH_HOURS, 0, 0, 20, 0);          //выключение света с 8 часов вечера + ульрафи
-    if(h == 20 && m == 0){
+   
+    if(watch.Hours == 20 && watch.minutes == 0){
       digitalWrite(relayPin1, LOW);
       relaySTATE1 = LOW;   
     }
@@ -207,44 +231,44 @@ void loop()
    
   
      //включение ультрафи 
-    if(h >= 8 && m == 0){
+    if(watch.Hours >= 8 && watch.minutes == 0){
      digitalWrite(relayPin2, HIGH);   
      relaySTATE2 = HIGH;     
     }                                                         //Свет ультрафи 
       //выключение ультрафи 
-    if(h >= 8 && m == 5){
+    if(watch.Hours >= 8 && watch.minutes == 5){
      digitalWrite(relayPin2, LOW);   
      relaySTATE2 = LOW;   
     }
-    if(h >= 20 && relaySTATE2 == HIGH){
+    if(watch.Hours >= 20 && relaySTATE2 == HIGH){
      digitalWrite(relayPin2, LOW);   
      relaySTATE2 = LOW;  
     }
   
     //Воздух к растениям
-    if(m == 0){
+    if(watch.minutes == 0){
       digitalWrite(relayPin3, HIGH);   
       relaySTATE3 = HIGH;  
     }
-    if(m == 20){
+    if(watch.minutes == 20){
       digitalWrite(relayPin3, LOW);   
       relaySTATE3 = LOW;  
     }
     
     //Вода из аквариума к растениям и вода от растений к аквариуму
-    if(h >= 8 && m == 0){
+    if(watch.Hours >= 8 && watch.minutes == 0){
      digitalWrite(relayPin4, HIGH);   
      digitalWrite(relayPin5, HIGH);   
      relaySTATE4 = HIGH;     
      relaySTATE5 = HIGH;     
     }                                                        
-    if(h >= 8 && m == 15){
+    if(watch.Hours >= 8 && watch.minutes == 15){
      digitalWrite(relayPin4, LOW);   
      digitalWrite(relayPin5, LOW);   
      relaySTATE4 = LOW;     
      relaySTATE5 = LOW;   
     }
-    if(h >= 20 && relaySTATE4 == HIGH || relaySTATE5 == HIGH){
+    if(watch.Hours >= 20 && relaySTATE4 == HIGH || relaySTATE5 == HIGH){
      digitalWrite(relayPin4, LOW);   
      digitalWrite(relayPin5, LOW);   
      relaySTATE4 = LOW;     
@@ -253,12 +277,12 @@ void loop()
   
   
     //Кормушка
-    if(h == 8 && m == 1){
+    if(watch.Hours == 8 && watch.minutes == 1){
       digitalWrite(relayPin6, HIGH);    
       //delay(5000);
       digitalWrite(relayPin6, LOW);    
       }
-   if(h == 18 && m == 1){
+   if(watch.Hours == 18 && watch.minutes == 1){
       digitalWrite(relayPin6, HIGH);    
       //delay(5000);
       digitalWrite(relayPin6, LOW);    
