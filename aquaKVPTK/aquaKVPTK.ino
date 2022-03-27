@@ -7,51 +7,45 @@
     #include <DallasTemperature.h>                            // для температуры
     #include <OneWire.h>                                      // для температуры
     #include <Wire.h>                                         // Подключаем библиотеку Wire для работы с шиной I2C
-    #include <iarduino_RTC.h>                                 // библиотека с часами RTC https://wiki.iarduino.ru/page/chasy-realnogo-vremeni-rtc-trema-modul/
-    #include <ESP8266SSDP.h>   
     
+    #include <ESP8266SSDP.h>   
+    #include <FS.h>                                           // для работы с файловой системой 
+   
     #include <ESP8266WebServer.h>                             // подключение сервера 
     #include <ESP8266WiFi.h>                                  // для потключения интернета 
-    
-   
-    #include <FS.h>                                           // для работы с файловой системой 
-    //#include <ESP8266FtpServer.h>                             // для работы с сервером 
-
+    #include <ESP8266HTTPUpdateServer.h>
+    #include <NTPClient.h>
+    #include <WiFiUdp.h>
     String AP       = "aboba";           // Здесь храним название точки доступа (роутера), к которой будем подключаться
-    String PASSWORD = "***********";       // Здесь храним пароль для подключения к точке доступа (роутеру)
-
+    String PASSWORD = "222212003D@#";       // Здесь храним пароль для подключения к точке доступа (роутеру)
     String SSDP_Name = "AQUA_KVPTK";          // Здесь определяем название устройства в сетевом окружении
-    //подключение к интернету
-    //const char* ssid     = "KVPTK_AQUA";
-    //const char* password = "12345678";
-    ESP8266WebServer HTTP(80); 
-   // FtpServer ftpSrv;
+
     
+    
+    
+    #include <iarduino_RTC.h>                                 // библиотека с часами RTC https://wiki.iarduino.ru/page/chasy-realnogo-vremeni-rtc-trema-modul/
     iarduino_RTC watch(RTC_DS3231);  
-    uint8_t D, M, Y, h, m, s, W;    
-    
+  
+                                                             //
     //  Определяем системное время:                           // Время загрузки скетча.
     const char* strM="JanFebMarAprMayJunJulAugSepOctNovDec";  // Определяем массив всех вариантов текстового представления текущего месяца.
     const char* sysT=__TIME__;                                // Получаем время компиляции скетча в формате "SS:MM:HH".
     const char* sysD=__DATE__;                                // Получаем дату  компиляции скетча в формате "MMM:DD:YYYY", где МММ - текстовое представление текущего месяца, например: Jul.
-    
     //  Парсим полученные значения sysT и sysD в массив i:    // Определяем массив «i» из 6 элементов типа int, содержащий следующие значения: секунды, минуты, часы, день, месяц и год компиляции скетча.
     const int i[6] {(sysT[6]-48)*10+(sysT[7]-48), (sysT[3]-48)*10+(sysT[4]-48), (sysT[0]-48)*10+(sysT[1]-48), (sysD[4]-48)*10+(sysD[5]-48), ((int)memmem(strM,36,sysD,3)+3-(int)&strM[0])/3, (sysD[9]-48)*10+(sysD[10]-48)};
-    
-    
     
     
     //const int oneWireBus = D8;     // температура подключен к пину
    // OneWire oneWire(oneWireBus);
     //DallasTemperature sensors(&oneWire);
     
-    const byte relayPin1 = D0;     // Пин к которому подключен реле Свет аквариума
-    const byte relayPin2 = D1;     // Свет ультрафи 
-    const byte relayPin3 = D4;     // Воздух к растениям
-    const byte relayPin4 = D5;     // Вода из аквариума к растениям 
-    const byte relayPin5 = D6;     // Вода от растений в аквариум
-    const byte relayPin6 = D7;     // Кормушка рыб
-    const byte relayPin7 = D8;     // Обогреватель 
+    const byte relayPin1 = D3;     // Пин к которому подключен реле Свет аквариума
+    const byte relayPin2 = D4;     // Свет ультрафи 
+    const byte relayPin3 = D5;     // Воздух к растениям
+    const byte relayPin4 = D6;     // Вода из аквариума к растениям 
+    const byte relayPin5 = D7;     // Вода от растений в аквариум
+    const byte relayPin6 = D8;     // Кормушка рыб
+    const byte relayPin7 = 03;     // Обогреватель 
     
     int relaySTATE1 = LOW;         // состояние реле Свет аквариума
     int relaySTATE2 = LOW;         // состояние реле ультрафи 
@@ -63,31 +57,31 @@
     
     float aquaTEMP = 21.00;        // Какая температура нужна в аквариуме
     
- 
-
+    const long utcOffsetInSeconds = 21600;
+    WiFiUDP ntpUDP;
+    NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+    char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    
+    ESP8266WebServer HTTP(80); 
 void setup()
 
 {
     Serial.begin(9600);                                   // Инициируем передачу данных в монитор последовательного порта
+    watch.begin();                                        // Инициируем RTC модуль
     
-    //WiFi.softAP(ssid, password);                       // Создаем точку доступа 
-    
-    WiFi.mode(WIFI_STA);                      // Определяем режим работы Wi-Fi модуля в режиме клиента
-    WiFi.begin(AP.c_str(), PASSWORD.c_str()); // Подключаемся к точке доступа (роутеру)
-    HTTP.begin();                             // Инициализируем Web-сервер
-    SPIFFS.begin();                           // Инициализируем файловую систему
-    SSDP_init();                              // Вызываем функцию инициализации SSDP (функция описана ниже)
-    //HTTP.begin();                            // инициализация веб сервера 
-    //ftpSrv.begin("relay","relay");   // подняние фтп сервера 
-    //SPIFFS.begin();                          // инициализация работы с файловой системой 
+    WiFi.mode(WIFI_STA);                        // Определяем режим работы Wi-Fi модуля в режиме клиента
+    WiFi.begin(AP.c_str(), PASSWORD.c_str());   // Подключаемся к точке доступа (роутеру)
+    HTTP.begin();                               // Инициализируем Web-сервер
+    SPIFFS.begin();                             // Инициализируем файловую систему
+    SSDP_init();                                 // Вызываем функцию инициализации SSDP (функция описана ниже)
+    //HTTP.begin();                              // инициализация веб сервера 
+    //ftpSrv.begin("relay","relay");            // подняние фтп сервера 
+    //SPIFFS.begin();                              // инициализация работы с файловой системой 
     Serial.print("\nMy IP connect via Web-Browser or FTP: ");
-    Serial.println(WiFi.softAPIP());         // вывод локального айпи 
+    Serial.println(WiFi.softAPIP());               // вывод локального айпи 
     Serial.println("\n");
     
-    watch.begin();                                          // Инициируем RTC модуль
-    watch.settime(i[0],i[1],i[2],i[3],i[4],i[5]);           // Устанавливаем время в модуль: i[0] сек, i[1] мин, i[2] час, i[3] день, i[4] месяц, i[5] год, без указания дня недели.
-//  RTC.settime(i[0],i[1],i[2],i[3],i[4],i[5], 2);        // Можно установить время с указанием дня недели, где последний параметр, это день недели (указывается вручную) в формате: 0-воскресенье, 1-понедельник, ... , 6-суббота
-    //watch.settime(0,17,14,25,3,22,5);      
+   
   
     pinMode(relayPin1, OUTPUT);               // Указываем вывод RELAY как выход //cвет в аквариуме
     pinMode(relayPin2, OUTPUT);               // Свет ультрафи 
@@ -106,7 +100,6 @@ void setup()
     digitalWrite(relayPin7, HIGH);  
      
 //    sensors.begin(); // температура
- 
     
   
 
@@ -154,14 +147,20 @@ void setup()
       HTTP.send(200, "text/plain", relay_status_air()); 
     });
 
-    // HTTP.on("/aqua_temp()", [] (){
+    // HTTP.on("/aqua_temp", [] (){
      // HTTP.send(200, "text/plain", aqua_temp()); 
    // });
+     HTTP.on("/status_time", [] (){
+      HTTP.send(200, "text/plain", status_time()); 
+    });
     HTTP.onNotFound([] (){
       if(!handleFileRead(HTTP.uri()))
       HTTP.send(404, "text/plain", "Not Found"); 
     });
-
+    
+   
+        
+    
 }
 
 void loop()
@@ -175,21 +174,24 @@ void loop()
     //float temperatureC = sensors.getTempCByIndex(0);        // получение температуры 
   
  
-      
+    timeClient.update();
+    watch.settime(timeClient.getSeconds(),timeClient.getMinutes(),timeClient.getHours());   // Устанавливаем время в модуль: i[0] сек, i[1] мин, i[2] час, i[3] день, i[4] месяц, i[5] год, без указания дня недели.      
+           
    if(millis()%1000==0){                                  // если прошла 1 секунда
-        watch.gettime();                                    // Считываем текущее время из модуля.
-        D = watch.day;                                      // Получаем текущий день месяца 1-31.
-        M = watch.month;                                    // Получаем текущий месяц       1-12.
-        Y = watch.year;                                     // Получаем текущий год         0-99.
-        h = watch.Hours;                                    // Получаем текущие часы        0-23.
-        m = watch.minutes;                                  // Получаем текущие минуты      0-59.
-        s = watch.seconds;                                  // Получаем текущие секунды     0-59.
-        W = watch.weekday;                                  // Получаем текущий день недели 0-6.
-        Serial.println((String) D+"-"+M+"-"+Y+", "+h+":"+m+":"+s+", "+W); // Выводим время в монитор порта, одной строкой.
+       Serial.println(watch.gettime("d-m-Y, H:i:s, D")); // 
+        Serial.print(daysOfTheWeek[timeClient.getDay()]);
+        Serial.print(", ");
+        Serial.print(timeClient.getHours());
+        Serial.print(":");
+        Serial.print(timeClient.getMinutes());
+        Serial.print(":");
+        Serial.println(timeClient.getSeconds());
     }
 
+      
 
     
+      
   /*
     //RTC.setAlarm(ALM1_MATCH_HOURS, 0, 0, 8, 0);           //свет с 8 часов + ульрафи
     if(h == 8 && m == 0){
@@ -281,7 +283,12 @@ void loop()
      // return String (temperatureC);
   //  }
 
-
+  
+   String status_time(){  
+     String time_aqua = watch.gettime(" H:i:s") ;
+     return String(time_aqua);
+    }
+   
     //переключение реле 
     String relay_switch_lighting(){        // свет
       byte state;
@@ -406,20 +413,8 @@ void loop()
         return String(state);
     }
 
-  
-    /*
-    bool handleFileRead(String path){
-    if(path.endsWith("/")) path += "index.html";
-    String contentType = getContentType(path);
-    if(SPIFFS.exists(path)){
-    File file = SPIFFS.open(path,"r");
-    size_t sent = HTTP.streamFile(file, contentType);
-    file.close();
-    return true;
-    }
-    return false;
-    }
-*/
+
+
   bool handleFileRead(String path){                       // Функция работы с файловой системой
   if(path.endsWith("/")) path += "index.html";           // Если устройство вызывается по корневому адресу, то должен вызываться файл index.htm (добавляем его в конец адреса)
   String contentType = getContentType(path);            // С помощью функции getContentType (описана ниже) определяем по типу файла (в адресе обращения) какой заголовок необходимо возвращать по его вызову
@@ -457,8 +452,8 @@ void loop()
   SSDP.setURL("/");                                                     // Адрес по которому производится обращение к устройству при инициализации подключения
   SSDP.setModelName(SSDP_Name);                                         // Название модели устройства
   SSDP.setModelNumber("000000000001");                                  // Номер модели
-  SSDP.setModelURL("http://iomoio.ru");                                 // Страница с описанием данной модели в Интернет
-  SSDP.setManufacturer("IOMOIO");                                       // Производитель
-  SSDP.setManufacturerURL("http://iomoio.ru");                          // Адрес сайта производителя
+  SSDP.setModelURL("KVPTK");                                 // Страница с описанием данной модели в Интернет
+  SSDP.setManufacturer("KVPTK");                                       // Производитель
+  SSDP.setManufacturerURL("KVPTK");                          // Адрес сайта производителя
   SSDP.begin();                                                         // Отдаем сформированную SSDP-схему описания устройства
 }

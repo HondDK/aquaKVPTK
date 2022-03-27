@@ -1,6 +1,7 @@
 // Жесткий говнокод, можно сделать гораздо лучше.
 
 var temp = document.getElementById("auqa_temp");
+var time = document.getElementById("status_time");
 let relay_lighting = document.getElementById("relay_lighting");
 let relay_lighting_purple = document.getElementById("relay_lighting_purple");
 let relay_air = document.getElementById("relay_air");
@@ -221,6 +222,17 @@ function auqa_temp() {
 	}
 }
 
+function status_time() {
+	var request = new XMLHttpRequest();
+	request.open("GET", "/status_time", true);
+	request.onload = function () {
+		if (request.status == 200) {
+			time.value = request.responseText;
+		} else time.value = "0";
+	};
+	request.send();
+}
+
 document.addEventListener("DOMContentLoaded", relay_state_lighting);
 document.addEventListener("DOMContentLoaded", relay_state_lighting_purple);
 document.addEventListener("DOMContentLoaded", relay_state_air);
@@ -228,6 +240,7 @@ document.addEventListener("DOMContentLoaded", relay_state_water_out);
 document.addEventListener("DOMContentLoaded", relay_state_water_in);
 document.addEventListener("DOMContentLoaded", relay_state_temp);
 document.addEventListener("DOMContentLoaded", auqa_temp);
+document.addEventListener("DOMContentLoaded", status_time);
 
 relay_lighting.addEventListener("click", relay_inverse_lighting);
 relay_lighting_purple.addEventListener("click", relay_inverse_lighting_purple);
