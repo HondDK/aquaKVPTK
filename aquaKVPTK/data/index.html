@@ -29,7 +29,7 @@
 
 		h1 {
 			font-family: arial, sans-serif;
-			font-size: 20px;
+			font-size: 14px;
 			color: white;
 		}
 
@@ -49,8 +49,20 @@
 			outline: 0;
 			background-color: transparent;
 			text-align: center;
-			font-size: 25px;
+			font-size: 14px;
 			color: white;
+
+		}
+
+		.timer_time {
+			font-family: arial, sans-serif;
+			border: 0;
+			outline: 0;
+			background-color: transparent;
+			text-align: center;
+			font-size: 14px;
+			color: white;
+			width: 35px;
 		}
 	</style>
 </head>
@@ -58,21 +70,68 @@
 <body>
 	<h1>Время на контроллере</h1>
 	<input class="temp" type="text" readonly min="0" value="" id="status_time" />
-	<h1>Освещение || Установка таймера</h1>
+	<h1>Освещение </h1>
 	<input class="" type="button" value="" id="relay_lighting" />
-	<h1>Ультрафиолет || Установка таймера</h1>
+	<h1>Ультрафиолет </h1>
 	<input class="" type="button" value="" id="relay_lighting_purple" />
-	<h1>Воздух к растениям || Установка таймера</h1>
+	<h1>Воздух к растениям </h1>
 	<input class="" type="button" value="" id="relay_air" />
-	<h1>Вода из аквариума || Установка таймера</h1>
+	<h1>Вода из аквариума </h1>
 	<input class="" type="button" value="" id="relay_water_out" />
-	<h1>Вода в аквариум || Установка таймера</h1>
+	<h1>Вода в аквариум </h1>
 	<input class="" type="button" value="" id="relay_water_in" />
 	<h1>Текущая тeмпература воды:</h1>
 	<input type="text" readonly id="auqa_temp" value="11" class="temp" />
-	<h1>Обогреватель || Установка температуры</h1>
+	<h1>Обогреватель </h1>
 	<input class="" type="button" value="" id="relay_temp" />
-	<h1>Кормушка || Установка таймера</h1>
+	<h1>Кормушка </h1>
+
+	<div class="timer_setting">
+		<div class="">
+			<h1>Освещение || Установленное время </h1>
+			<h1>Включение в <input class="timer_time" id="timer_time_lighting_h_on" readonly type="text"
+					value="">часов<input class="timer_time" id="timer_time_lighting_m_on" type="text" readonly
+					value="">минут </h1>
+			<h1>Выключение в <input class="timer_time" id="timer_time_lighting_h_off" readonly type="text"
+					value="">часов<input class="timer_time" id="timer_time_lighting_m_off" type="text" readonly
+					value="">минут</h1>
+		</div>
+		<div class="">
+			<h1>Ультрафиолет || Установленное время: </h1>
+			<h1>Включение в <input class="timer_time" id="timer_time_lighting_purple_m_on" type="text" readonly
+					value="">минут (Каждый час c 8:00 до 20:00) </h1>
+			<h1>Выключение в <input class="timer_time" id="timer_time_lighting_purple_m_off" type="text" readonly
+					value="">минут (Каждый часc 8:00 до 20:00)</h1>
+		</div>
+		<div class="">
+			<h1>Воздух к растениям || Установленное время: </h1>
+			<h1>Включение в <input class="timer_time" id="timer_time_air_m_on" type="text" readonly value="">минут
+				(Круглосуточно) </h1>
+			<h1>Выключение в <input class="timer_time" id="timer_time_air_m_off" type="text" readonly value="">минут
+				(Круглосуточно)</h1>
+		</div>
+		<div class="">
+			<h1>Вода из аквариума к растениям и вода от растений в аквариум || Установленное время: </h1>
+			<h1>Включение в <input class="timer_time" id="timer_time_water_out_m_on" type="text" readonly value="">минут
+				(Каждый час c 8:00 до 20:00) </h1>
+			<h1>Выключение в <input class="timer_time" id="timer_time_water_out_m_off" type="text" readonly
+					value="">минут (Каждый часc 8:00 до 20:00)</h1>
+		</div>
+		<div class="">
+			<h1>Кормушка || Установленное время: </h1>
+			<h1>1 Включение в <input class="timer_time" id="timer_time_food_h_1" readonly type="text"
+					value="">часов<input class="timer_time" id="timer_time_food_m_1" type="text" readonly value="">минут
+			</h1>
+			<h1>2 Включение в <input class="timer_time" id="timer_time_food_h_2" readonly type="text"
+					value="">часов<input class="timer_time" id="timer_time_food_m_2" type="text" readonly value="">минут
+			</h1>
+		</div>
+		<div class="">
+			<h1>Обогреватель || Установленная температура: <input class="timer_time" id="installed_temp" type="text"
+					value="">градусов
+			</h1>
+		</div>
+	</div>
 	<script src="/script.js">
 	</script>
 </body>

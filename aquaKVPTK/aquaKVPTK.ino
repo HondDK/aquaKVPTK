@@ -50,34 +50,42 @@
     const byte relayPin6 = D8;     // Кормушка рыб
     const byte relayPin7 = 03;     // Обогреватель 
     
-    int relaySTATE1 = LOW;         // состояние реле Свет аквариума
-    int relaySTATE2 = LOW;         // состояние реле ультрафи 
-    int relaySTATE3 = LOW;         // Воздух к растениям
-    int relaySTATE4 = LOW;         // Вода из аквариума к растениям 
-    int relaySTATE5 = LOW;         // Вода от растений в аквариум
-    int relaySTATE6 = LOW;         // Кормушка рыб
-    int relaySTATE7 = LOW;         // Обогреватель 
+    int relaySTATE1 = HIGH;         // состояние реле Свет аквариума
+    int relaySTATE2 = HIGH;         // состояние реле ультрафи 
+    int relaySTATE3 = HIGH;         // Воздух к растениям
+    int relaySTATE4 = HIGH;         // Вода из аквариума к растениям 
+    int relaySTATE5 = HIGH;         // Вода от растений в аквариум
+    int relaySTATE6 = HIGH;         // Кормушка рыб
+    int relaySTATE7 = HIGH;         // Обогреватель 
     
    
 
 
-    int lighting_hours;            // Свет аквариума таймер
-    int lighting_min;
+    int lighting_hours_on = 8;              // Свет аквариума таймер
+    int lighting_min_on = 0;
+    int lighting_hours_off = 20;            // Свет аквариума таймер
+    int lighting_min_off = 0;
     
-    int lighting_purple_hours;     // ультрафи  таймер
-    int lighting_purple_min;
+    int lighting_purple_hours_on = 8 ;     // ультрафи  таймер
+    int lighting_purple_min_on = 0;
+    int lighting_purple_hours_off = 20 ;     // ультрафи  таймер
+    int lighting_purple_min_off = 5;
     
-    int air_hours;                 // Воздух к растениям таймер
-    int air_min;
+    int air_hours_on;                 // Воздух к растениям таймер
+    int air_min_on = 0;
+    int air_hours_off;                 // Воздух к растениям таймер
+    int air_min_off = 20;
     
-    int water_out_hours;           // Вода из аквариума к растениям таймер
-    int water_out_min;
+    int water_out_hours_on;           // Вода из аквариума к растениям и вода от растений в аквариум
+    int water_out_min_on = 0;
+    int water_out_hours_off;           // Вода из аквариума к растениям и вода от растений в аквариум
+    int water_out_min_off = 15;
     
-    int water_in_hours;            // Вода от растений в аквариум таймер
-    int water_in_min;
-
-    int food_hours;                // Кормушка рыб таймер
-    int food_min;
+    
+    int food_hours_on_1 = 8;                // Кормушка рыб таймер
+    int food_min_on_1 = 0;
+    int food_hours_on_2 = 18;                // Кормушка рыб таймер
+    int food_min_on_2 = 8 ;
  
     float aquaTEMP = 21.00;        // Какая температура нужна в аквариуме
 
@@ -181,14 +189,61 @@ void setup()
       HTTP.send(200, "text/plain", status_time()); 
     });
     
+     HTTP.on("/timer_time_lighting_h_on", [] (){
+      HTTP.send(200, "text/plain", String(lighting_hours_on)); 
+    });
+    HTTP.on("/timer_time_lighting_m_on", [] (){
+      HTTP.send(200, "text/plain", String(lighting_min_on)); 
+    });
+     HTTP.on("/timer_time_lighting_h_off", [] (){
+      HTTP.send(200, "text/plain", String(lighting_hours_off)); 
+    });
+    HTTP.on("/timer_time_lighting_m_off", [] (){
+      HTTP.send(200, "text/plain", String(lighting_min_off)); 
+    });
+    
+     HTTP.on("/timer_time_lighting_purple_m_on", [] (){
+      HTTP.send(200, "text/plain", String(lighting_purple_min_on)); 
+    });
+    HTTP.on("/timer_time_lighting_purple_m_off", [] (){
+      HTTP.send(200, "text/plain", String(lighting_purple_min_off)); 
+    });
+
+     HTTP.on("/timer_air_m_on", [] (){
+      HTTP.send(200, "text/plain", String(air_min_on)); 
+    });
+    HTTP.on("/timer_air_m_off", [] (){
+      HTTP.send(200, "text/plain", String(air_min_off)); 
+    });
+    
+    //Вода из аквариума к растениям и вода от растений в аквариум
+      HTTP.on("/timer_time_water_out_m_on", [] (){
+      HTTP.send(200, "text/plain", String(water_out_min_on)); 
+    });
+    HTTP.on("/timer_time_water_out_m_off", [] (){
+      HTTP.send(200, "text/plain", String(water_out_min_off)); 
+    });
+
+    //Кормушка
+      HTTP.on("/timer_time_food_h_1", [] (){
+      HTTP.send(200, "text/plain", String(food_hours_on_1)); 
+    });
+    HTTP.on("/timer_time_food_m_1", [] (){
+      HTTP.send(200, "text/plain", String(food_min_on_1)); 
+    });
+    //Кормушка
+      HTTP.on("/timer_time_food_h_2", [] (){
+      HTTP.send(200, "text/plain", String(food_hours_on_2)); 
+    });
+    HTTP.on("/timer_time_food_m_2", [] (){
+      HTTP.send(200, "text/plain", String(food_min_on_2)); 
+    });
+    
     HTTP.onNotFound([] (){
       if(!handleFileRead(HTTP.uri()))
       HTTP.send(404, "text/plain", "Not Found"); 
     });
-    
-   
-        
-    
+
 }
 
 void loop()
@@ -217,86 +272,89 @@ void loop()
     }
 
    //Установка таймеров
+   
    // освещение
-    if(watch.Hours == 8 && watch.minutes == 0){
-     digitalWrite(relayPin1, HIGH);   
-     relaySTATE1 = HIGH;     
+    if(watch.Hours >= lighting_hours_on && watch.minutes >= lighting_min_on && watch.Hours <= lighting_hours_off){
+     digitalWrite(relayPin1, LOW);   
+     relaySTATE1 = LOW;     
     }
    
-    if(watch.Hours == 20 && watch.minutes == 0){
-      digitalWrite(relayPin1, LOW);
-      relaySTATE1 = LOW;   
+    if(watch.Hours >= lighting_hours_off && watch.minutes >= lighting_min_off){
+      digitalWrite(relayPin1, HIGH);
+      relaySTATE1 = HIGH;   
     }
     
    
   
      //включение ультрафи 
-    if(watch.Hours >= 8 && watch.minutes == 0){
-     digitalWrite(relayPin2, HIGH);   
-     relaySTATE2 = HIGH;     
+    if(watch.Hours >= lighting_purple_hours_on && watch.minutes == lighting_purple_min_on && watch.Hours <= lighting_purple_hours_off){
+     digitalWrite(relayPin2, LOW);   
+     relaySTATE2 = LOW;     
     }                                                         //Свет ультрафи 
       //выключение ультрафи 
-    if(watch.Hours >= 8 && watch.minutes == 5){
-     digitalWrite(relayPin2, LOW);   
-     relaySTATE2 = LOW;   
+    if(watch.Hours >= lighting_purple_hours_on && watch.minutes == lighting_purple_min_off && watch.Hours <= lighting_purple_hours_off){
+     digitalWrite(relayPin2, HIGH);   
+     relaySTATE2 = HIGH;   
     }
-    if(watch.Hours >= 20 && relaySTATE2 == HIGH){
-     digitalWrite(relayPin2, LOW);   
-     relaySTATE2 = LOW;  
+    if(watch.Hours >= lighting_purple_hours_off && relaySTATE2 == LOW){
+     digitalWrite(relayPin2, HIGH);   
+     relaySTATE2 = HIGH;  
     }
   
     //Воздух к растениям
-    if(watch.minutes == 0){
-      digitalWrite(relayPin3, HIGH);   
-      relaySTATE3 = HIGH;  
-    }
-    if(watch.minutes == 20){
+    if(watch.minutes >= air_min_on && watch.minutes <= air_min_off){
       digitalWrite(relayPin3, LOW);   
       relaySTATE3 = LOW;  
     }
+    if(watch.minutes >= air_min_off){
+      digitalWrite(relayPin3, HIGH);   
+      relaySTATE3 = HIGH;  
+    }
     
     //Вода из аквариума к растениям и вода от растений к аквариуму
-    if(watch.Hours >= 8 && watch.minutes == 0){
+    if(watch.Hours >= 8 && watch.minutes >= water_out_min_on && watch.Hours <= 20){
+     digitalWrite(relayPin4, LOW);   
+     digitalWrite(relayPin5, LOW);   
+     relaySTATE4 = LOW;     
+     relaySTATE5 = LOW;     
+    }                                                        
+    if(watch.Hours >= 8 && watch.minutes >= water_out_min_off && watch.Hours <= 20){
      digitalWrite(relayPin4, HIGH);   
      digitalWrite(relayPin5, HIGH);   
      relaySTATE4 = HIGH;     
-     relaySTATE5 = HIGH;     
-    }                                                        
-    if(watch.Hours >= 8 && watch.minutes == 15){
-     digitalWrite(relayPin4, LOW);   
-     digitalWrite(relayPin5, LOW);   
-     relaySTATE4 = LOW;     
-     relaySTATE5 = LOW;   
+     relaySTATE5 = HIGH;   
     }
-    if(watch.Hours >= 20 && relaySTATE4 == HIGH || relaySTATE5 == HIGH){
-     digitalWrite(relayPin4, LOW);   
-     digitalWrite(relayPin5, LOW);   
-     relaySTATE4 = LOW;     
-     relaySTATE5 = LOW;   
+    if(watch.Hours >= 20){
+     digitalWrite(relayPin4, HIGH);   
+     digitalWrite(relayPin5, HIGH);   
+     relaySTATE4 = HIGH;     
+     relaySTATE5 = HIGH;   
     }
   
   
     //Кормушка
-    if(watch.Hours == 8 && watch.minutes == 1){
-      digitalWrite(relayPin6, HIGH);    
-      //delay(5000);
+    if(watch.Hours == food_hours_on_1 && watch.minutes == food_min_on_1){
       digitalWrite(relayPin6, LOW);    
+      if(millis()%5000==0){  
+      digitalWrite(relayPin6, HIGH);    
       }
-   if(watch.Hours == 18 && watch.minutes == 1){
-      digitalWrite(relayPin6, HIGH);    
-      //delay(5000);
+      }
+   if(watch.Hours == food_hours_on_2 && watch.minutes == food_min_on_2){
       digitalWrite(relayPin6, LOW);    
+       if(millis()%5000==0){ 
+      digitalWrite(relayPin6, HIGH);    
+       }
       }
   
 /*
     //Температура 
     if(round(aquaTEMP) < round(temperatureC)){
-      digitalWrite(relayPin7, HIGH);   
-      relaySTATE7 = HIGH; 
+      digitalWrite(relayPin7, LOW);   
+      relaySTATE7 = LOW; 
     }
     if(round(aquaTEMP) > round(temperatureC) ){
-      digitalWrite(relayPin7, LOW);   
-      relaySTATE7 = LOW;  
+      digitalWrite(relayPin7, HIGH);   
+      relaySTATE7 = HIGH;  
     }
     */
   }
@@ -307,11 +365,12 @@ void loop()
      // return String (temperatureC);
   //  }
 
-  
+   //получение времени
    String status_time(){  
      String time_aqua = watch.gettime(" H:i:s") ;
      return String(time_aqua);
     }
+
    
     //переключение реле 
     String relay_switch_lighting(){        // свет
@@ -328,9 +387,9 @@ void loop()
     String relay_status_lighting(){       // свет
       byte state;
       if(digitalRead(relayPin1))
-         state = 1;
-      else
          state = 0;
+      else
+         state = 1;
         return String(state);
     }
     
@@ -349,9 +408,9 @@ void loop()
     String relay_status_lighting_purple(){  // свет ультрафи
       byte state;
       if(digitalRead(relayPin2))
-         state = 1;
-      else
          state = 0;
+      else
+         state = 1;
         return String(state);
     }
     
@@ -370,9 +429,9 @@ void loop()
     String relay_status_air(){              // воздух
       byte state;
       if(digitalRead(relayPin3))
-         state = 1;
-      else
          state = 0;
+      else
+         state = 1;
         return String(state);
     }
 
@@ -390,9 +449,9 @@ void loop()
     String relay_status_water_out(){              // вода из аквариума
       byte state;
       if(digitalRead(relayPin4))
-         state = 1;
-      else
          state = 0;
+      else
+         state = 1;
         return String(state);
     }
 
@@ -410,9 +469,9 @@ void loop()
     String relay_status_water_in(){              // вода в аквариум
       byte state;
       if(digitalRead(relayPin5))
-         state = 1;
-      else
          state = 0;
+      else
+         state = 1;
         return String(state);
     }
 
@@ -431,9 +490,9 @@ void loop()
     String relay_status_temp(){              // обогреватель
       byte state;
       if(digitalRead(relayPin7))
-         state = 1;
-      else
          state = 0;
+      else
+         state = 1;
         return String(state);
     }
 
