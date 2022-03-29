@@ -16,6 +16,7 @@
     #include <ESP8266HTTPUpdateServer.h>
     #include <NTPClient.h>
     #include <WiFiUdp.h>
+    
     String AP       = "aboba";           // Здесь храним название точки доступа (роутера), к которой будем подключаться
     String PASSWORD = "222212003D@#";       // Здесь храним пароль для подключения к точке доступа (роутеру)
     String SSDP_Name = "AQUA_KVPTK";          // Здесь определяем название устройства в сетевом окружении
@@ -188,57 +189,7 @@ void setup()
      HTTP.on("/status_time", [] (){
       HTTP.send(200, "text/plain", status_time()); 
     });
-    
-     HTTP.on("/timer_time_lighting_h_on", [] (){
-      HTTP.send(200, "text/plain", String(lighting_hours_on)); 
-    });
-    HTTP.on("/timer_time_lighting_m_on", [] (){
-      HTTP.send(200, "text/plain", String(lighting_min_on)); 
-    });
-     HTTP.on("/timer_time_lighting_h_off", [] (){
-      HTTP.send(200, "text/plain", String(lighting_hours_off)); 
-    });
-    HTTP.on("/timer_time_lighting_m_off", [] (){
-      HTTP.send(200, "text/plain", String(lighting_min_off)); 
-    });
-    
-     HTTP.on("/timer_time_lighting_purple_m_on", [] (){
-      HTTP.send(200, "text/plain", String(lighting_purple_min_on)); 
-    });
-    HTTP.on("/timer_time_lighting_purple_m_off", [] (){
-      HTTP.send(200, "text/plain", String(lighting_purple_min_off)); 
-    });
-
-     HTTP.on("/timer_air_m_on", [] (){
-      HTTP.send(200, "text/plain", String(air_min_on)); 
-    });
-    HTTP.on("/timer_air_m_off", [] (){
-      HTTP.send(200, "text/plain", String(air_min_off)); 
-    });
-    
-    //Вода из аквариума к растениям и вода от растений в аквариум
-      HTTP.on("/timer_time_water_out_m_on", [] (){
-      HTTP.send(200, "text/plain", String(water_out_min_on)); 
-    });
-    HTTP.on("/timer_time_water_out_m_off", [] (){
-      HTTP.send(200, "text/plain", String(water_out_min_off)); 
-    });
-
-    //Кормушка
-      HTTP.on("/timer_time_food_h_1", [] (){
-      HTTP.send(200, "text/plain", String(food_hours_on_1)); 
-    });
-    HTTP.on("/timer_time_food_m_1", [] (){
-      HTTP.send(200, "text/plain", String(food_min_on_1)); 
-    });
-    //Кормушка
-      HTTP.on("/timer_time_food_h_2", [] (){
-      HTTP.send(200, "text/plain", String(food_hours_on_2)); 
-    });
-    HTTP.on("/timer_time_food_m_2", [] (){
-      HTTP.send(200, "text/plain", String(food_min_on_2)); 
-    });
-    
+     
     HTTP.onNotFound([] (){
       if(!handleFileRead(HTTP.uri()))
       HTTP.send(404, "text/plain", "Not Found"); 
@@ -364,6 +315,7 @@ void loop()
      // float temperatureC = sensors.getTempCByIndex(0);        // получение температуры 
      // return String (temperatureC);
   //  }
+
 
    //получение времени
    String status_time(){  
