@@ -61,8 +61,6 @@
     int relaySTATE7 = HIGH;         // Обогреватель 
     
    
-
-
     int lighting_hours_on = 8;              // Свет аквариума таймер
     int lighting_min_on = 0;
     int lighting_hours_off = 20;            // Свет аквариума таймер
@@ -92,12 +90,6 @@
     float aquaTEMP = 21.00;        // Какая температура нужна в аквариуме
 
 
-
-
-
-
-
-    
     ESP8266WebServer HTTP(80); 
     
 void setup()
@@ -137,8 +129,6 @@ void setup()
      
 //    sensors.begin(); // температура
     
-  
-
     //HTPP запросы 
     
     HTTP.on("/relay_switch_lighting", [] (){                              // свет
@@ -235,6 +225,260 @@ void setup()
     HTTP.on("/timer_time_food_m_2", [] (){
       HTTP.send(200, "text/plain", f_food_min_on_2()); 
     });
+
+
+    HTTP.on("/setup_timer_time_min_1", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_1()); 
+        });
+     HTTP.on("/setup_timer_time_min_2", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_2()); 
+        });
+         HTTP.on("/setup_timer_time_min_3", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_3()); 
+        });
+         HTTP.on("/setup_timer_time_min_4", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_4()); 
+        });
+         HTTP.on("/setup_timer_time_min_5", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_5()); 
+        });
+         HTTP.on("/setup_timer_time_min_6", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_6()); 
+        });
+         HTTP.on("/setup_timer_time_min_7", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_7()); 
+        });
+         HTTP.on("/setup_timer_time_min_8", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_8()); 
+        });
+         HTTP.on("/setup_timer_time_min_9", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_9()); 
+        });
+        HTTP.on("/setup_timer_time_min_10", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_10()); 
+        });
+        HTTP.on("/setup_timer_time_min_11", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_11()); 
+        });
+        HTTP.on("/setup_timer_time_min_12", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_12()); 
+        });
+        HTTP.on("/setup_timer_time_min_13", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_13()); 
+        });
+        HTTP.on("/setup_timer_time_min_14", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_14()); 
+        });
+        HTTP.on("/setup_timer_time_min_15", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_15()); 
+        });
+        HTTP.on("/setup_timer_time_min_16", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_16()); 
+        });
+        HTTP.on("/setup_timer_time_min_17", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_17()); 
+        });
+        HTTP.on("/setup_timer_time_min_18", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_18()); 
+        });
+        HTTP.on("/setup_timer_time_min_19", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_19()); 
+        });
+        HTTP.on("/setup_timer_time_min_20", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_20()); 
+        });
+        HTTP.on("/setup_timer_time_min_21", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_21()); 
+        });
+        HTTP.on("/setup_timer_time_min_22", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_22()); 
+        });
+        HTTP.on("/setup_timer_time_min_23", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_23()); 
+        });
+        HTTP.on("/setup_timer_time_min_24", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_24()); 
+        });
+        HTTP.on("/setup_timer_time_min_25", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_25()); 
+        });
+        HTTP.on("/setup_timer_time_min_26", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_26()); 
+        });
+        HTTP.on("/setup_timer_time_min_27", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_27()); 
+        });
+        HTTP.on("/setup_timer_time_min_28", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_28()); 
+        });
+         HTTP.on("/setup_timer_time_min_29", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_29()); 
+        });
+        HTTP.on("/setup_timer_time_min_30", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_30()); 
+        });
+         HTTP.on("/setup_timer_time_min_31", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_31()); 
+        });
+        HTTP.on("/setup_timer_time_min_32", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_32()); 
+        });
+         HTTP.on("/setup_timer_time_min_33", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_33()); 
+        });
+        HTTP.on("/setup_timer_time_min_34", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_34()); 
+        });
+         HTTP.on("/setup_timer_time_min_35", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_35()); 
+        });
+        HTTP.on("/setup_timer_time_min_36", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_36()); 
+        });
+         HTTP.on("/setup_timer_time_min_37", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_37()); 
+        });
+        HTTP.on("/setup_timer_time_min_38", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_38()); 
+        });
+         HTTP.on("/setup_timer_time_min_39", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_39()); 
+        });
+        HTTP.on("/setup_timer_time_min_40", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_40()); 
+        });
+         HTTP.on("/setup_timer_time_min_41", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_41()); 
+        });
+        HTTP.on("/setup_timer_time_min_42", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_42()); 
+        });
+         HTTP.on("/setup_timer_time_min_43", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_43()); 
+        });
+        HTTP.on("/setup_timer_time_min_44", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_44()); 
+        });
+         HTTP.on("/setup_timer_time_min_45", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_45()); 
+        });
+        HTTP.on("/setup_timer_time_min_46", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_47()); 
+        });
+         HTTP.on("/setup_timer_time_min_48", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_48()); 
+        });
+        HTTP.on("/setup_timer_time_min_49", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_49()); 
+        });
+         HTTP.on("/setup_timer_time_min_50", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_50()); 
+        });
+        HTTP.on("/setup_timer_time_min_51", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_51()); 
+        });
+         HTTP.on("/setup_timer_time_min_52", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_52()); 
+        });
+        HTTP.on("/setup_timer_time_min_53", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_53()); 
+        });
+        HTTP.on("/setup_timer_time_min_54", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_54()); 
+        });
+        HTTP.on("/setup_timer_time_min_55", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_55()); 
+        });
+        HTTP.on("/setup_timer_time_min_56", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_56()); 
+        });
+        HTTP.on("/setup_timer_time_min_57", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_57()); 
+        });
+        HTTP.on("/setup_timer_time_min_58", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_58()); 
+        });
+         HTTP.on("/setup_timer_time_min_59", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_59()); 
+        });
+        HTTP.on("/setup_timer_time_min_60", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_60()); 
+        });
+
+
+       HTTP.on("/setup_timer_time_h_1", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_1()); 
+        });
+         HTTP.on("/setup_timer_time_h_2", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_2()); 
+        });
+         HTTP.on("/setup_timer_time_h_3", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_3()); 
+        });
+         HTTP.on("/setup_timer_time_h_4", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_4()); 
+        });
+         HTTP.on("/setup_timer_time_h_5", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_5()); 
+        });
+         HTTP.on("/setup_timer_time_h_6", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_6()); 
+        });
+         HTTP.on("/setup_timer_time_h_7", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_7()); 
+        });
+         HTTP.on("/setup_timer_time_h_8", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_8()); 
+        });
+         HTTP.on("/setup_timer_time_h_8", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_8()); 
+        });
+         HTTP.on("/setup_timer_time_h_9", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_9()); 
+        });
+         HTTP.on("/setup_timer_time_h_10", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_10()); 
+        });
+         HTTP.on("/setup_timer_time_h_11", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_11()); 
+        });
+         HTTP.on("/setup_timer_time_h_12", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_12()); 
+        });
+         HTTP.on("/setup_timer_time_h_13", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_13()); 
+        });
+         HTTP.on("/setup_timer_time_h_14", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_14()); 
+        });
+         HTTP.on("/setup_timer_time_h_15", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_15()); 
+        });
+         HTTP.on("/setup_timer_time_h_16", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_16()); 
+        });
+         HTTP.on("/setup_timer_time_h_17", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_17()); 
+        });
+         HTTP.on("/setup_timer_time_h_18", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_18()); 
+        });
+         HTTP.on("/setup_timer_time_h_19", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_19()); 
+        });
+         HTTP.on("/setup_timer_time_h_20", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_20()); 
+        });
+         HTTP.on("/setup_timer_time_h_21", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_21()); 
+        });
+         HTTP.on("/setup_timer_time_h_22", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_22()); 
+        });
+         HTTP.on("/setup_timer_time_h_23", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_h_23()); 
+        });
+
 
     HTTP.onNotFound([] (){
       if(!handleFileRead(HTTP.uri()))
@@ -368,6 +612,201 @@ void loop()
      String time_aqua = watch.gettime("H:i") ;
      return String(time_aqua);
     }
+
+  int setup_timer_time(){
+    
+    switch(){
+
+    }
+
+  }
+
+  void setup_timer_time_min_1(){
+    lighting_purple_min_off = 1;    
+  }
+  void setup_timer_time_min_2(){
+    lighting_purple_min_off = 2;    
+  }
+  void setup_timer_time_min_3(){
+    lighting_purple_min_off = 3;    
+  }
+  void setup_timer_time_min_4(){
+    lighting_purple_min_off = 4;    
+  }
+  void setup_timer_time_min_5(){
+    lighting_purple_min_off = 5;    
+  }
+  void setup_timer_time_min_6(){
+    lighting_purple_min_off = 6;    
+  }
+  void setup_timer_time_min_7(){
+    lighting_purple_min_off = 7;    
+  }
+  void setup_timer_time_min_8(){
+    lighting_purple_min_off = 8;    
+  }
+  void setup_timer_time_min_9(){
+    lighting_purple_min_off = 9;    
+  }
+  void setup_timer_time_min_10(){
+    lighting_purple_min_off = 10;    
+  }
+  void setup_timer_time_min_11(){
+    lighting_purple_min_off = 11;    
+  }
+  void setup_timer_time_min_12(){
+    lighting_purple_min_off = 12;    
+  }
+  void setup_timer_time_min_12(){
+    lighting_purple_min_off = 12;    
+  }
+  void setup_timer_time_min_13(){
+    lighting_purple_min_off = 13;    
+  }
+  void setup_timer_time_min_14(){
+    lighting_purple_min_off = 14;    
+  }
+  void setup_timer_time_min_15(){
+    lighting_purple_min_off = 15;    
+  }
+  void setup_timer_time_min_16(){
+    lighting_purple_min_off = 16;    
+  }
+  void setup_timer_time_min_17(){
+    lighting_purple_min_off = 17;    
+  }
+  void setup_timer_time_min_18(){
+    lighting_purple_min_off = 18;    
+  }
+  void setup_timer_time_min_19(){
+    lighting_purple_min_off = 19;    
+  }
+  void setup_timer_time_min_20(){
+    lighting_purple_min_off = 20;    
+  }
+  void setup_timer_time_min_21(){
+    lighting_purple_min_off = 21;    
+  }
+  void setup_timer_time_min_22(){
+    lighting_purple_min_off = 22;    
+  }
+  void setup_timer_time_min_23(){
+    lighting_purple_min_off = 23;    
+  }
+  void setup_timer_time_min_24(){
+    lighting_purple_min_off = 24;    
+  }
+  void setup_timer_time_min_25(){
+    lighting_purple_min_off = 25;    
+  }
+  void setup_timer_time_min_26(){
+    lighting_purple_min_off = 26;    
+  }
+  void setup_timer_time_min_27(){
+    lighting_purple_min_off = 27;    
+  }
+  void setup_timer_time_min_28(){
+    lighting_purple_min_off = 28;    
+  }
+  void setup_timer_time_min_29(){
+    lighting_purple_min_off = 29;    
+  }
+  void setup_timer_time_min_30(){
+    lighting_purple_min_off = 30;    
+  }
+  void setup_timer_time_min_31(){
+    lighting_purple_min_off = 31;    
+  }
+  void setup_timer_time_min_32(){
+    lighting_purple_min_off = 32;    
+  }
+  void setup_timer_time_min_33(){
+    lighting_purple_min_off = 33;    
+  }
+  void setup_timer_time_min_34(){
+    lighting_purple_min_off = 34;    
+  }
+  void setup_timer_time_min_35(){
+    lighting_purple_min_off = 35;    
+  }
+  void setup_timer_time_min_36(){
+    lighting_purple_min_off = 36;    
+  }
+  void setup_timer_time_min_37(){
+    lighting_purple_min_off = 37;    
+  }
+  void setup_timer_time_min_38(){
+    lighting_purple_min_off = 38;    
+  }
+  void setup_timer_time_min_39(){
+    lighting_purple_min_off = 39;    
+  }
+  void setup_timer_time_min_40(){
+    lighting_purple_min_off = 40;    
+  }
+   void setup_timer_time_min_41(){
+    lighting_purple_min_off = 41;    
+  }
+  void setup_timer_time_min_42(){
+    lighting_purple_min_off = 42;    
+  }
+  void setup_timer_time_min_43(){
+    lighting_purple_min_off = 43;    
+  }
+  void setup_timer_time_min_44(){
+    lighting_purple_min_off = 44;    
+  }
+  void setup_timer_time_min_45(){
+    lighting_purple_min_off = 45;    
+  }
+  void setup_timer_time_min_46(){
+    lighting_purple_min_off = 46;    
+  }
+  void setup_timer_time_min_47(){
+    lighting_purple_min_off = 47;    
+  }
+  void setup_timer_time_min_48(){
+    lighting_purple_min_off = 48;    
+  }
+  void setup_timer_time_min_49(){
+    lighting_purple_min_off = 49;    
+  }
+  void setup_timer_time_min_50(){
+    lighting_purple_min_off = 50;    
+  }
+ void setup_timer_time_min_51(){
+    lighting_purple_min_off = 51;    
+  }
+  void setup_timer_time_min_52(){
+    lighting_purple_min_off = 52;    
+  }
+  void setup_timer_time_min_53(){
+    lighting_purple_min_off = 53;    
+  }
+  void setup_timer_time_min_54(){
+    lighting_purple_min_off = 54;    
+  }
+  void setup_timer_time_min_55(){
+    lighting_purple_min_off = 55;    
+  }
+  void setup_timer_time_min_56(){
+    lighting_purple_min_off = 56;    
+  }
+  void setup_timer_time_min_57(){
+    lighting_purple_min_off = 57;    
+  }
+  void setup_timer_time_min_58(){
+    lighting_purple_min_off = 58;    
+  }
+  void setup_timer_time_min_59(){
+    lighting_purple_min_off = 59;    
+  }
+  void setup_timer_time_min_60(){
+    lighting_purple_min_off = 60;    
+  }
+
+
+
     
   String f_lighting_hours_on(){
    return String(lighting_hours_on); 

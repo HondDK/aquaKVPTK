@@ -44,6 +44,11 @@ let install_temp = document.getElementById("installed_temp");
 let relay_status;
 
 let tagBody = document.getElementsByTagName('body');
+
+
+let setup_timer_time_lighting_purple_m_off = document.getElementById("set_timer_time_lighting_purple_m_off");
+let btn_set_timer_time_lighting_purple_m_off = document.getElementById("btn_set_timer_time_lighting_purple_m_off");
+
 //Cвет
 function relay_state_lighting() {
 	var request = new XMLHttpRequest();
@@ -253,6 +258,197 @@ function relay_inverse_temp() {
 	location.reload();
 }
 
+function setup_timer_time_min(){
+	var request = new XMLHttpRequest();
+	switch(setup_timer_time_lighting_purple_m_off.value){
+		case 1:
+			request.open("GET", "/setup_timer_time_min_1", false);
+		break;
+		case 2:
+			request.open("GET", "/setup_timer_time_min_2", false);
+		break;
+		case 3:
+			request.open("GET", "/setup_timer_time_min_3", false);
+		break;
+		case 4:
+			request.open("GET", "/setup_timer_time_min_4", false);
+		break;
+		case 5:
+			request.open("GET", "/setup_timer_time_min_5", false);
+		break;
+		case 6:
+			request.open("GET", "/setup_timer_time_min_6", false);
+		break;
+		case 7:
+			request.open("GET", "/setup_timer_time_min_7", false);
+		break;
+		case 8:
+			request.open("GET", "/setup_timer_time_min_8", false);
+		break;
+		case 9:
+			request.open("GET", "/setup_timer_time_min_9", false);
+		break;
+		case 10:
+			request.open("GET", "/setup_timer_time_min_10", false);
+		break;
+		case 11:
+			request.open("GET", "/setup_timer_time_min_11", false);
+		break;
+		case 12:
+			request.open("GET", "/setup_timer_time_min_12", false);
+		break;
+		case 13:
+			request.open("GET", "/setup_timer_time_min_13", false);
+		break;
+		case 14:
+			request.open("GET", "/setup_timer_time_min_14", false);
+		break;
+		case 15:
+			request.open("GET", "/setup_timer_time_min_15", false);
+		break;
+		case 16:
+			request.open("GET", "/setup_timer_time_min_16", false);
+		break;
+		case 17:
+			request.open("GET", "/setup_timer_time_min_17", false);
+		break;
+		case 18:
+			request.open("GET", "/setup_timer_time_min_18", false);
+		break;
+		case 19:
+			request.open("GET", "/setup_timer_time_min_19", false);
+		break;
+		case 20:
+			request.open("GET", "/setup_timer_time_min_20", false);
+		break;
+		case 21:
+			request.open("GET", "/setup_timer_time_min_21", false);
+		break;
+		case 22:
+			request.open("GET", "/setup_timer_time_min_22", false);
+		break;
+		case 23:
+			request.open("GET", "/setup_timer_time_min_23", false);
+		break;
+		case 24:
+			request.open("GET", "/setup_timer_time_min_24", false);
+		break;
+		case 25:
+			request.open("GET", "/setup_timer_time_min_25", false);
+		break;
+		case 26:
+			request.open("GET", "/setup_timer_time_min_26", false);
+		break;
+		case 27:
+			request.open("GET", "/setup_timer_time_min_27", false);
+		break;
+		case 28:
+			request.open("GET", "/setup_timer_time_min_28", false);
+		break;
+		case 29:
+			request.open("GET", "/setup_timer_time_min_29", false);
+		break;
+		case 30:
+			request.open("GET", "/setup_timer_time_min_30", false);
+		break;
+		case 31:
+			request.open("GET", "/setup_timer_time_min_31", false);
+		break;
+		case 32:
+			request.open("GET", "/setup_timer_time_min_32", false);
+		break;
+		case 33:
+			request.open("GET", "/setup_timer_time_min_33", false);
+		break;
+		case 34:
+			request.open("GET", "/setup_timer_time_min_34", false);
+		break;
+		case 35:
+			request.open("GET", "/setup_timer_time_min_35", false);
+		break;
+		case 36:
+			request.open("GET", "/setup_timer_time_min_36", false);
+		break;
+		case 37:
+			request.open("GET", "/setup_timer_time_min_37", false);
+		break;
+		case 38:
+			request.open("GET", "/setup_timer_time_min_38", false);
+		break;
+		case 39:
+			request.open("GET", "/setup_timer_time_min_39", false);
+		break;
+		case 40:
+			request.open("GET", "/setup_timer_time_min_40", false);
+		break;
+		case 41:
+			request.open("GET", "/setup_timer_time_min_41", false);
+		break;
+		case 42:
+			request.open("GET", "/setup_timer_time_min_42", false);
+		break;
+		case 43:
+			request.open("GET", "/setup_timer_time_min_43", false);
+		break;
+		case 44:
+			request.open("GET", "/setup_timer_time_min_44", false);
+		break;
+		case 45:
+			request.open("GET", "/setup_timer_time_min_45", false);
+		break;
+		case 46:
+			request.open("GET", "/setup_timer_time_min_46", false);
+		break;
+		case 47:
+			request.open("GET", "/setup_timer_time_min_47", false);
+		break;
+		case 48:
+			request.open("GET", "/setup_timer_time_min_48", false);
+		break;
+		case 49:
+			request.open("GET", "/setup_timer_time_min_49", false);
+		break;
+		case 50:
+			request.open("GET", "/setup_timer_time_min_50", false);
+		break;
+		case 51:
+			request.open("GET", "/setup_timer_time_min_51", false);
+		break;
+		case 52:
+			request.open("GET", "/setup_timer_time_min_52", false);
+		break;
+		case 53:
+			request.open("GET", "/setup_timer_time_min_53", false);
+		break;
+		case 54:
+			request.open("GET", "/setup_timer_time_min_54", false);
+		break;
+		case 55:
+			request.open("GET", "/setup_timer_time_min_55", false);
+		break;
+		case 56:
+			request.open("GET", "/setup_timer_time_min_56", false);
+		break;
+		case 57:
+			request.open("GET", "/setup_timer_time_min_57", false);
+		break;
+		case 58:
+			request.open("GET", "/setup_timer_time_min_58", false);
+		break;
+		case 59:
+			request.open("GET", "/setup_timer_time_min_59", false);
+		break;
+		case 60:
+			request.open("GET", "/setup_timer_time_min_60", false);
+		break;
+
+
+	}
+	request.send();
+	location.reload();
+}
+
+
 //получение температуры
 function auqa_temp() {
 	var request = new XMLHttpRequest();
@@ -338,6 +534,8 @@ function timer_time() {
 	request14.send();
 }
 
+
+
 document.addEventListener("DOMContentLoaded", relay_state_lighting);
 document.addEventListener("DOMContentLoaded", relay_state_lighting_purple);
 document.addEventListener("DOMContentLoaded", relay_state_air);
@@ -355,3 +553,4 @@ relay_air.addEventListener("click", relay_inverse_air);
 relay_water_out.addEventListener("click", relay_inverse_water_out);
 relay_water_in.addEventListener("click", relay_inverse_water_in);
 relay_temp.addEventListener("click", relay_inverse_temp);
+btn_set_timer_time_lighting_purple_m_off.addEventListener("click", setup_timer_time);
