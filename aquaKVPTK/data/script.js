@@ -9,6 +9,7 @@ let relay_air = document.getElementById("relay_air");
 let relay_water_out = document.getElementById("relay_water_out");
 let relay_water_in = document.getElementById("relay_water_in");
 let relay_temp = document.getElementById("relay_temp");
+let gett_auqa_temp = document.getElementById("get_auqa_temp");
 
 let timer_time_ligh_h_on = document.getElementById("timer_time_lighting_h_on");
 let timer_time_ligh_m_on = document.getElementById("timer_time_lighting_m_on");
@@ -43,12 +44,31 @@ let install_temp = document.getElementById("installed_temp");
 
 let relay_status;
 
-let tagBody = document.getElementsByTagName('body');
+let tagBody = document.getElementsByTagName("body");
 
+let setup_timer_time_lighting_purple_m_off = document.getElementById(
+	"set_timer_time_lighting_purple_m_off"
+);
+let btn_set_timer_time_lighting_purple_m_off = document.getElementById(
+	"btn_set_timer_time_lighting_purple_m_off"
+);
+let setup_timer_time_air_m_off = document.getElementById(
+	"set_timer_time_air_m_off"
+);
+let btn_setup_timer_time_lighting_air_m_off = document.getElementById(
+	"btn_set_timer_time_lighting_air_m_off"
+);
 
-let setup_timer_time_lighting_purple_m_off = document.getElementById("set_timer_time_lighting_purple_m_off");
-let btn_set_timer_time_lighting_purple_m_off = document.getElementById("btn_set_timer_time_lighting_purple_m_off");
+let setup_timer_time_water_out_m_off = document.getElementById(
+	"set_timer_time_water_out_m_off"
+);
+let btn_setup_timer_time_water_out_m_off = document.getElementById(
+	"btn_set_timer_time_water_out_m_off"
+);
 
+let get_auqa_temp = document.getElementById("get_auqa_temp");
+let set_auqa_temp = document.getElementById("set_auqa_temp");
+let btn_setup_temp = document.getElementById("btn_setup_temp");
 //Cвет
 function relay_state_lighting() {
 	var request = new XMLHttpRequest();
@@ -258,212 +278,881 @@ function relay_inverse_temp() {
 	location.reload();
 }
 
-function setup_timer_time_min(){
+function setup_timer_time_min_purple() {
 	var request = new XMLHttpRequest();
-	switch(setup_timer_time_lighting_purple_m_off.value){
+	value = Number.parseInt(setup_timer_time_lighting_purple_m_off.value);
+	switch (value) {
 		case 1:
-			request.open("GET", "/setup_timer_time_min_1", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_1_purple", false);
+			alert("Установлено!");
+			break;
 		case 2:
-			request.open("GET", "/setup_timer_time_min_2", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_2_purple", false);
+			alert("Установлено!");
+			break;
 		case 3:
-			request.open("GET", "/setup_timer_time_min_3", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_3_purple", false);
+			alert("Установлено!");
+			break;
 		case 4:
-			request.open("GET", "/setup_timer_time_min_4", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_4_purple", false);
+			alert("Установлено!");
+			break;
 		case 5:
-			request.open("GET", "/setup_timer_time_min_5", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_5_purple", false);
+			alert("Установлено!");
+			break;
 		case 6:
-			request.open("GET", "/setup_timer_time_min_6", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_6_purple", false);
+			alert("Установлено!");
+			break;
 		case 7:
-			request.open("GET", "/setup_timer_time_min_7", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_7_purple", false);
+			alert("Установлено!");
+			break;
 		case 8:
-			request.open("GET", "/setup_timer_time_min_8", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_8_purple", false);
+			alert("Установлено!");
+			break;
 		case 9:
-			request.open("GET", "/setup_timer_time_min_9", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_9_purple", false);
+			alert("Установлено!");
+			break;
 		case 10:
-			request.open("GET", "/setup_timer_time_min_10", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_10_purple", false);
+			alert("Установлено!");
+			break;
 		case 11:
-			request.open("GET", "/setup_timer_time_min_11", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_11_purple", false);
+			alert("Установлено!");
+			break;
 		case 12:
-			request.open("GET", "/setup_timer_time_min_12", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_12_purple", false);
+			alert("Установлено!");
+			break;
 		case 13:
-			request.open("GET", "/setup_timer_time_min_13", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_13_purple", false);
+			alert("Установлено!");
+			break;
 		case 14:
-			request.open("GET", "/setup_timer_time_min_14", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_14_purple", false);
+			alert("Установлено!");
+			break;
 		case 15:
-			request.open("GET", "/setup_timer_time_min_15", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_15_purple", false);
+			alert("Установлено!");
+			break;
 		case 16:
-			request.open("GET", "/setup_timer_time_min_16", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_16_purple", false);
+			alert("Установлено!");
+			break;
 		case 17:
-			request.open("GET", "/setup_timer_time_min_17", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_17_purple", false);
+			alert("Установлено!");
+			break;
 		case 18:
-			request.open("GET", "/setup_timer_time_min_18", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_18_purple", false);
+			alert("Установлено!");
+			break;
 		case 19:
-			request.open("GET", "/setup_timer_time_min_19", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_19_purple", false);
+			alert("Установлено!");
+			break;
 		case 20:
-			request.open("GET", "/setup_timer_time_min_20", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_20_purple", false);
+			alert("Установлено!");
+			break;
 		case 21:
-			request.open("GET", "/setup_timer_time_min_21", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_21_purple", false);
+			alert("Установлено!");
+			break;
 		case 22:
-			request.open("GET", "/setup_timer_time_min_22", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_22_purple", false);
+			alert("Установлено!");
+			break;
 		case 23:
-			request.open("GET", "/setup_timer_time_min_23", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_23_purple", false);
+			alert("Установлено!");
+			break;
 		case 24:
-			request.open("GET", "/setup_timer_time_min_24", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_24_purple", false);
+			alert("Установлено!");
+			break;
 		case 25:
-			request.open("GET", "/setup_timer_time_min_25", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_25_purple", false);
+			alert("Установлено!");
+			break;
 		case 26:
-			request.open("GET", "/setup_timer_time_min_26", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_26_purple", false);
+			alert("Установлено!");
+			break;
 		case 27:
-			request.open("GET", "/setup_timer_time_min_27", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_27_purple", false);
+			alert("Установлено!");
+			break;
 		case 28:
-			request.open("GET", "/setup_timer_time_min_28", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_28_purple", false);
+			alert("Установлено!");
+			break;
 		case 29:
-			request.open("GET", "/setup_timer_time_min_29", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_29_purple", false);
+			alert("Установлено!");
+			break;
 		case 30:
-			request.open("GET", "/setup_timer_time_min_30", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_30_purple", false);
+			alert("Установлено!");
+			break;
 		case 31:
-			request.open("GET", "/setup_timer_time_min_31", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_31_purple", false);
+			alert("Установлено!");
+			break;
 		case 32:
-			request.open("GET", "/setup_timer_time_min_32", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_32_purple", false);
+			alert("Установлено!");
+			break;
 		case 33:
-			request.open("GET", "/setup_timer_time_min_33", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_33_purple", false);
+			alert("Установлено!");
+			break;
 		case 34:
-			request.open("GET", "/setup_timer_time_min_34", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_34_purple", false);
+			alert("Установлено!");
+			break;
 		case 35:
-			request.open("GET", "/setup_timer_time_min_35", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_35_purple", false);
+			alert("Установлено!");
+			break;
 		case 36:
-			request.open("GET", "/setup_timer_time_min_36", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_36_purple", false);
+			alert("Установлено!");
+			break;
 		case 37:
-			request.open("GET", "/setup_timer_time_min_37", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_37_purple", false);
+			alert("Установлено!");
+			break;
 		case 38:
-			request.open("GET", "/setup_timer_time_min_38", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_38_purple", false);
+			alert("Установлено!");
+			break;
 		case 39:
-			request.open("GET", "/setup_timer_time_min_39", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_39_purple", false);
+			alert("Установлено!");
+			break;
 		case 40:
-			request.open("GET", "/setup_timer_time_min_40", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_40_purple", false);
+			alert("Установлено!");
+			break;
 		case 41:
-			request.open("GET", "/setup_timer_time_min_41", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_41_purple", false);
+			alert("Установлено!");
+			break;
 		case 42:
-			request.open("GET", "/setup_timer_time_min_42", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_42_purple", false);
+			alert("Установлено!");
+			break;
 		case 43:
-			request.open("GET", "/setup_timer_time_min_43", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_43_purple", false);
+			alert("Установлено!");
+			break;
 		case 44:
-			request.open("GET", "/setup_timer_time_min_44", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_44_purple", false);
+			alert("Установлено!");
+			break;
 		case 45:
-			request.open("GET", "/setup_timer_time_min_45", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_45_purple", false);
+			alert("Установлено!");
+			break;
 		case 46:
-			request.open("GET", "/setup_timer_time_min_46", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_46_purple", false);
+			alert("Установлено!");
+			break;
 		case 47:
-			request.open("GET", "/setup_timer_time_min_47", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_47_purple", false);
+			alert("Установлено!");
+			break;
 		case 48:
-			request.open("GET", "/setup_timer_time_min_48", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_48_purple", false);
+			alert("Установлено!");
+			break;
 		case 49:
-			request.open("GET", "/setup_timer_time_min_49", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_49_purple", false);
+			alert("Установлено!");
+			break;
 		case 50:
-			request.open("GET", "/setup_timer_time_min_50", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_50_purple", false);
+			alert("Установлено!");
+			break;
 		case 51:
-			request.open("GET", "/setup_timer_time_min_51", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_51_purple", false);
+			alert("Установлено!");
+			break;
 		case 52:
-			request.open("GET", "/setup_timer_time_min_52", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_52_purple", false);
+			alert("Установлено!");
+			break;
 		case 53:
-			request.open("GET", "/setup_timer_time_min_53", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_53_purple", false);
+			alert("Установлено!");
+			break;
 		case 54:
-			request.open("GET", "/setup_timer_time_min_54", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_54_purple", false);
+			alert("Установлено!");
+			break;
 		case 55:
-			request.open("GET", "/setup_timer_time_min_55", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_55_purple", false);
+			alert("Установлено!");
+			break;
 		case 56:
-			request.open("GET", "/setup_timer_time_min_56", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_56_purple", false);
+			alert("Установлено!");
+			break;
 		case 57:
-			request.open("GET", "/setup_timer_time_min_57", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_57_purple", false);
+			alert("Установлено!");
+			break;
 		case 58:
-			request.open("GET", "/setup_timer_time_min_58", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_58_purple", false);
+			alert("Установлено!");
+			break;
 		case 59:
-			request.open("GET", "/setup_timer_time_min_59", false);
-		break;
+			request.open("GET", "/setup_timer_time_min_59_purple", false);
+			alert("Установлено!");
+			break;
 		case 60:
-			request.open("GET", "/setup_timer_time_min_60", false);
-		break;
-
-
+			request.open("GET", "/setup_timer_time_min_60_purple", false);
+			alert("Установлено!");
+			break;
 	}
 	request.send();
 	location.reload();
 }
-
-
+function setup_timer_time_lighting_air_m_off() {
+	var request = new XMLHttpRequest();
+	value = Number.parseInt(setup_timer_time_air_m_off.value);
+	switch (value) {
+		case 1:
+			request.open("GET", "/setup_timer_time_min_1_air", false);
+			alert("Установлено!");
+			break;
+		case 2:
+			request.open("GET", "/setup_timer_time_min_2_air", false);
+			alert("Установлено!");
+			break;
+		case 3:
+			request.open("GET", "/setup_timer_time_min_3_air", false);
+			alert("Установлено!");
+			break;
+		case 4:
+			request.open("GET", "/setup_timer_time_min_4_air", false);
+			alert("Установлено!");
+			break;
+		case 5:
+			request.open("GET", "/setup_timer_time_min_5_air", false);
+			alert("Установлено!");
+			break;
+		case 6:
+			request.open("GET", "/setup_timer_time_min_6_air", false);
+			alert("Установлено!");
+			break;
+		case 7:
+			request.open("GET", "/setup_timer_time_min_7_air", false);
+			alert("Установлено!");
+			break;
+		case 8:
+			request.open("GET", "/setup_timer_time_min_8_air", false);
+			alert("Установлено!");
+			break;
+		case 9:
+			request.open("GET", "/setup_timer_time_min_9_air", false);
+			alert("Установлено!");
+			break;
+		case 10:
+			request.open("GET", "/setup_timer_time_min_10_air", false);
+			alert("Установлено!");
+			break;
+		case 11:
+			request.open("GET", "/setup_timer_time_min_11_air", false);
+			alert("Установлено!");
+			break;
+		case 12:
+			request.open("GET", "/setup_timer_time_min_12_air", false);
+			alert("Установлено!");
+			break;
+		case 13:
+			request.open("GET", "/setup_timer_time_min_13_air", false);
+			alert("Установлено!");
+			break;
+		case 14:
+			request.open("GET", "/setup_timer_time_min_14_air", false);
+			alert("Установлено!");
+			break;
+		case 15:
+			request.open("GET", "/setup_timer_time_min_15_air", false);
+			alert("Установлено!");
+			break;
+		case 16:
+			request.open("GET", "/setup_timer_time_min_16_air", false);
+			alert("Установлено!");
+			break;
+		case 17:
+			request.open("GET", "/setup_timer_time_min_17_air", false);
+			alert("Установлено!");
+			break;
+		case 18:
+			request.open("GET", "/setup_timer_time_min_18_air", false);
+			alert("Установлено!");
+			break;
+		case 19:
+			request.open("GET", "/setup_timer_time_min_19_air", false);
+			alert("Установлено!");
+			break;
+		case 20:
+			request.open("GET", "/setup_timer_time_min_20_air", false);
+			alert("Установлено!");
+			break;
+		case 21:
+			request.open("GET", "/setup_timer_time_min_21_air", false);
+			alert("Установлено!");
+			break;
+		case 22:
+			request.open("GET", "/setup_timer_time_min_22_air", false);
+			alert("Установлено!");
+			break;
+		case 23:
+			request.open("GET", "/setup_timer_time_min_23_air", false);
+			alert("Установлено!");
+			break;
+		case 24:
+			request.open("GET", "/setup_timer_time_min_24_air", false);
+			alert("Установлено!");
+			break;
+		case 25:
+			request.open("GET", "/setup_timer_time_min_25_air", false);
+			alert("Установлено!");
+			break;
+		case 26:
+			request.open("GET", "/setup_timer_time_min_26_air", false);
+			alert("Установлено!");
+			break;
+		case 27:
+			request.open("GET", "/setup_timer_time_min_27_air", false);
+			alert("Установлено!");
+			break;
+		case 28:
+			request.open("GET", "/setup_timer_time_min_28_air", false);
+			alert("Установлено!");
+			break;
+		case 29:
+			request.open("GET", "/setup_timer_time_min_29_air", false);
+			alert("Установлено!");
+			break;
+		case 30:
+			request.open("GET", "/setup_timer_time_min_30_air", false);
+			alert("Установлено!");
+			break;
+		case 31:
+			request.open("GET", "/setup_timer_time_min_31_air", false);
+			alert("Установлено!");
+			break;
+		case 32:
+			request.open("GET", "/setup_timer_time_min_32_air", false);
+			alert("Установлено!");
+			break;
+		case 33:
+			request.open("GET", "/setup_timer_time_min_33_air", false);
+			alert("Установлено!");
+			break;
+		case 34:
+			request.open("GET", "/setup_timer_time_min_34_air", false);
+			alert("Установлено!");
+			break;
+		case 35:
+			request.open("GET", "/setup_timer_time_min_35_air", false);
+			alert("Установлено!");
+			break;
+		case 36:
+			request.open("GET", "/setup_timer_time_min_36_air", false);
+			alert("Установлено!");
+			break;
+		case 37:
+			request.open("GET", "/setup_timer_time_min_37_air", false);
+			alert("Установлено!");
+			break;
+		case 38:
+			request.open("GET", "/setup_timer_time_min_38_air", false);
+			alert("Установлено!");
+			break;
+		case 39:
+			request.open("GET", "/setup_timer_time_min_39_air", false);
+			alert("Установлено!");
+			break;
+		case 40:
+			request.open("GET", "/setup_timer_time_min_40_air", false);
+			alert("Установлено!");
+			break;
+		case 41:
+			request.open("GET", "/setup_timer_time_min_41_air", false);
+			alert("Установлено!");
+			break;
+		case 42:
+			request.open("GET", "/setup_timer_time_min_42_air", false);
+			alert("Установлено!");
+			break;
+		case 43:
+			request.open("GET", "/setup_timer_time_min_43_air", false);
+			alert("Установлено!");
+			break;
+		case 44:
+			request.open("GET", "/setup_timer_time_min_44_air", false);
+			alert("Установлено!");
+			break;
+		case 45:
+			request.open("GET", "/setup_timer_time_min_45_air", false);
+			alert("Установлено!");
+			break;
+		case 46:
+			request.open("GET", "/setup_timer_time_min_46_air", false);
+			alert("Установлено!");
+			break;
+		case 47:
+			request.open("GET", "/setup_timer_time_min_47_air", false);
+			alert("Установлено!");
+			break;
+		case 48:
+			request.open("GET", "/setup_timer_time_min_48_air", false);
+			alert("Установлено!");
+			break;
+		case 49:
+			request.open("GET", "/setup_timer_time_min_49_air", false);
+			alert("Установлено!");
+		case 50:
+			request.open("GET", "/setup_timer_time_min_50_air", false);
+			alert("Установлено!");
+			break;
+		case 51:
+			request.open("GET", "/setup_timer_time_min_51_air", false);
+			alert("Установлено!");
+			break;
+		case 52:
+			request.open("GET", "/setup_timer_time_min_52_air", false);
+			alert("Установлено!");
+			break;
+		case 53:
+			request.open("GET", "/setup_timer_time_min_53_air", false);
+			alert("Установлено!");
+			break;
+		case 54:
+			request.open("GET", "/setup_timer_time_min_54_air", false);
+			alert("Установлено!");
+			break;
+		case 55:
+			request.open("GET", "/setup_timer_time_min_55_air", false);
+			alert("Установлено!");
+			break;
+		case 56:
+			request.open("GET", "/setup_timer_time_min_56_air", false);
+			alert("Установлено!");
+			break;
+		case 57:
+			request.open("GET", "/setup_timer_time_min_57_air", false);
+			alert("Установлено!");
+			break;
+		case 58:
+			request.open("GET", "/setup_timer_time_min_58_air", false);
+			alert("Установлено!");
+			break;
+		case 59:
+			request.open("GET", "/setup_timer_time_min_59_air", false);
+			alert("Установлено!");
+			break;
+		case 60:
+			request.open("GET", "/setup_timer_time_min_60_air", false);
+			alert("Установлено!");
+			break;
+	}
+	request.send();
+	location.reload();
+}
+function setup_timer_time_lighting_water_m_off() {
+	var request = new XMLHttpRequest();
+	value = Number.parseInt(setup_timer_time_water_out_m_off.value);
+	switch (value) {
+		case 1:
+			request.open("GET", "/setup_timer_time_min_1_water", false);
+			alert("Установлено!");
+			break;
+		case 2:
+			request.open("GET", "/setup_timer_time_min_2_water", false);
+			alert("Установлено!");
+			break;
+		case 3:
+			request.open("GET", "/setup_timer_time_min_3_water", false);
+			alert("Установлено!");
+			break;
+		case 4:
+			request.open("GET", "/setup_timer_time_min_4_water", false);
+			alert("Установлено!");
+			break;
+		case 5:
+			request.open("GET", "/setup_timer_time_min_5_water", false);
+			alert("Установлено!");
+			break;
+		case 6:
+			request.open("GET", "/setup_timer_time_min_6_water", false);
+			alert("Установлено!");
+			break;
+		case 7:
+			request.open("GET", "/setup_timer_time_min_7_water", false);
+			alert("Установлено!");
+			break;
+		case 8:
+			request.open("GET", "/setup_timer_time_min_8_water", false);
+			alert("Установлено!");
+			break;
+		case 9:
+			request.open("GET", "/setup_timer_time_min_9_water", false);
+			alert("Установлено!");
+			break;
+		case 10:
+			request.open("GET", "/setup_timer_time_min_10_water", false);
+			alert("Установлено!");
+			break;
+		case 11:
+			request.open("GET", "/setup_timer_time_min_11_water", false);
+			alert("Установлено!");
+			break;
+		case 12:
+			request.open("GET", "/setup_timer_time_min_12_water", false);
+			alert("Установлено!");
+			break;
+		case 13:
+			request.open("GET", "/setup_timer_time_min_13_water", false);
+			alert("Установлено!");
+			break;
+		case 14:
+			request.open("GET", "/setup_timer_time_min_14_water", false);
+			alert("Установлено!");
+			break;
+		case 15:
+			request.open("GET", "/setup_timer_time_min_15_water", false);
+			alert("Установлено!");
+			break;
+		case 16:
+			request.open("GET", "/setup_timer_time_min_16_water", false);
+			alert("Установлено!");
+			break;
+		case 17:
+			request.open("GET", "/setup_timer_time_min_17_water", false);
+			alert("Установлено!");
+			break;
+		case 18:
+			request.open("GET", "/setup_timer_time_min_18_water", false);
+			alert("Установлено!");
+			break;
+		case 19:
+			request.open("GET", "/setup_timer_time_min_19_water", false);
+			alert("Установлено!");
+			break;
+		case 20:
+			request.open("GET", "/setup_timer_time_min_20_water", false);
+			alert("Установлено!");
+			break;
+		case 21:
+			request.open("GET", "/setup_timer_time_min_21_water", false);
+			alert("Установлено!");
+			break;
+		case 22:
+			request.open("GET", "/setup_timer_time_min_22_water", false);
+			alert("Установлено!");
+			break;
+		case 23:
+			request.open("GET", "/setup_timer_time_min_23_water", false);
+			alert("Установлено!");
+			break;
+		case 24:
+			request.open("GET", "/setup_timer_time_min_24_water", false);
+			alert("Установлено!");
+			break;
+		case 25:
+			request.open("GET", "/setup_timer_time_min_25_water", false);
+			alert("Установлено!");
+			break;
+		case 26:
+			request.open("GET", "/setup_timer_time_min_26_water", false);
+			alert("Установлено!");
+			break;
+		case 27:
+			request.open("GET", "/setup_timer_time_min_27_water", false);
+			alert("Установлено!");
+			break;
+		case 28:
+			request.open("GET", "/setup_timer_time_min_28_water", false);
+			alert("Установлено!");
+			break;
+		case 29:
+			request.open("GET", "/setup_timer_time_min_29_water", false);
+			alert("Установлено!");
+			break;
+		case 30:
+			request.open("GET", "/setup_timer_time_min_30_water", false);
+			alert("Установлено!");
+			break;
+		case 31:
+			request.open("GET", "/setup_timer_time_min_31_water", false);
+			alert("Установлено!");
+			break;
+		case 32:
+			request.open("GET", "/setup_timer_time_min_32_water", false);
+			alert("Установлено!");
+			break;
+		case 33:
+			request.open("GET", "/setup_timer_time_min_33_water", false);
+			alert("Установлено!");
+			break;
+		case 34:
+			request.open("GET", "/setup_timer_time_min_34_water", false);
+			alert("Установлено!");
+			break;
+		case 35:
+			request.open("GET", "/setup_timer_time_min_35_water", false);
+			alert("Установлено!");
+			break;
+		case 36:
+			request.open("GET", "/setup_timer_time_min_36_water", false);
+			alert("Установлено!");
+			break;
+		case 37:
+			request.open("GET", "/setup_timer_time_min_37_water", false);
+			alert("Установлено!");
+			break;
+		case 38:
+			request.open("GET", "/setup_timer_time_min_38_water", false);
+			alert("Установлено!");
+			break;
+		case 39:
+			request.open("GET", "/setup_timer_time_min_39_water", false);
+			alert("Установлено!");
+			break;
+		case 40:
+			request.open("GET", "/setup_timer_time_min_40_water", false);
+			alert("Установлено!");
+			break;
+		case 41:
+			request.open("GET", "/setup_timer_time_min_41_water", false);
+			alert("Установлено!");
+			break;
+		case 42:
+			request.open("GET", "/setup_timer_time_min_42_water", false);
+			alert("Установлено!");
+			break;
+		case 43:
+			request.open("GET", "/setup_timer_time_min_43_water", false);
+			alert("Установлено!");
+			break;
+		case 44:
+			request.open("GET", "/setup_timer_time_min_44_water", false);
+			alert("Установлено!");
+			break;
+		case 45:
+			request.open("GET", "/setup_timer_time_min_45_water", false);
+			alert("Установлено!");
+			break;
+		case 46:
+			request.open("GET", "/setup_timer_time_min_46_water", false);
+			alert("Установлено!");
+			break;
+		case 47:
+			request.open("GET", "/setup_timer_time_min_47_water", false);
+			alert("Установлено!");
+			break;
+		case 48:
+			request.open("GET", "/setup_timer_time_min_48_water", false);
+			alert("Установлено!");
+			break;
+		case 49:
+			request.open("GET", "/setup_timer_time_min_49_water", false);
+			alert("Установлено!");
+		case 50:
+			request.open("GET", "/setup_timer_time_min_50_water", false);
+			alert("Установлено!");
+			break;
+		case 51:
+			request.open("GET", "/setup_timer_time_min_51_water", false);
+			alert("Установлено!");
+			break;
+		case 52:
+			request.open("GET", "/setup_timer_time_min_52_water", false);
+			alert("Установлено!");
+			break;
+		case 53:
+			request.open("GET", "/setup_timer_time_min_53_water", false);
+			alert("Установлено!");
+			break;
+		case 54:
+			request.open("GET", "/setup_timer_time_min_54_water", false);
+			alert("Установлено!");
+			break;
+		case 55:
+			request.open("GET", "/setup_timer_time_min_55_water", false);
+			alert("Установлено!");
+			break;
+		case 56:
+			request.open("GET", "/setup_timer_time_min_56_water", false);
+			alert("Установлено!");
+			break;
+		case 57:
+			request.open("GET", "/setup_timer_time_min_57_water", false);
+			alert("Установлено!");
+			break;
+		case 58:
+			request.open("GET", "/setup_timer_time_min_58_water", false);
+			alert("Установлено!");
+			break;
+		case 59:
+			request.open("GET", "/setup_timer_time_min_59_water", false);
+			alert("Установлено!");
+			break;
+		case 60:
+			request.open("GET", "/setup_timer_time_min_60_water", false);
+			alert("Установлено!");
+			break;
+	}
+	request.send();
+	location.reload();
+}
+function setup_temp() {
+	var request = new XMLHttpRequest();
+	value = Number.parseInt(set_auqa_temp.value);
+	switch (value) {
+		case 10:
+			request.open("GET", "/setup_temp_10", false);
+			alert("Установлено!");
+			break;
+		case 11:
+			request.open("GET", "/setup_temp_11", false);
+			alert("Установлено!");
+			break;
+		case 12:
+			request.open("GET", "/setup_temp_12", false);
+			alert("Установлено!");
+			break;
+		case 13:
+			request.open("GET", "/setup_temp_13", false);
+			alert("Установлено!");
+			break;
+		case 14:
+			request.open("GET", "/setup_temp_14", false);
+			alert("Установлено!");
+			break;
+		case 15:
+			request.open("GET", "/setup_temp_15", false);
+			alert("Установлено!");
+			break;
+		case 16:
+			request.open("GET", "/setup_temp_16", false);
+			alert("Установлено!");
+			break;
+		case 17:
+			request.open("GET", "/setup_temp_17", false);
+			alert("Установлено!");
+			break;
+		case 18:
+			request.open("GET", "/setup_temp_18", false);
+			alert("Установлено!");
+			break;
+		case 19:
+			request.open("GET", "/setup_temp_19", false);
+			alert("Установлено!");
+			break;
+		case 20:
+			request.open("GET", "/setup_temp_20", false);
+			alert("Установлено!");
+			break;
+		case 21:
+			request.open("GET", "/setup_temp_21", false);
+			alert("Установлено!");
+			break;
+		case 22:
+			request.open("GET", "/setup_temp_22", false);
+			alert("Установлено!");
+			break;
+		case 23:
+			request.open("GET", "/setup_temp_23", false);
+			alert("Установлено!");
+			break;
+		case 24:
+			request.open("GET", "/setup_temp_24", false);
+			alert("Установлено!");
+			break;
+		case 25:
+			request.open("GET", "/setup_temp_25", false);
+			alert("Установлено!");
+			break;
+		case 26:
+			request.open("GET", "/setup_temp_26", false);
+			alert("Установлено!");
+			break;
+		case 27:
+			request.open("GET", "/setup_temp_27", false);
+			alert("Установлено!");
+			break;
+		case 28:
+			request.open("GET", "/setup_temp_28", false);
+			alert("Установлено!");
+			break;
+		case 29:
+			request.open("GET", "/setup_temp_29", false);
+			alert("Установлено!");
+			break;
+		case 30:
+			request.open("GET", "/setup_temp_30", false);
+			alert("Установлено!");
+			break;
+		case 31:
+			request.open("GET", "/setup_temp_31", false);
+			alert("Установлено!");
+			break;
+		case 32:
+			request.open("GET", "/setup_temp_32", false);
+			alert("Установлено!");
+			break;
+		case 33:
+			request.open("GET", "/setup_temp_33", false);
+			alert("Установлено!");
+			break;
+		case 34:
+			request.open("GET", "/setup_temp_34", false);
+			alert("Установлено!");
+			break;
+	}
+	request.send();
+	location.reload();
+}
 //получение температуры
 function auqa_temp() {
 	var request = new XMLHttpRequest();
-	request.open("GET", "/auqa_temp", false);
+	request.open("GET", "/aqua_temp", false);
+	request.onload = function () {
+		if (request.status == 200) {
+			temp.value = request.responseText;
+		} else temp.value = 0;
+	};
 	request.send();
-	if (request.status == 200) {
-		var response = request.responseText;
-		temp.value = response;
-	}
 }
-
+function g_auqa_temp() {
+	var request = new XMLHttpRequest();
+	request.open("GET", "/get_aqua_temp", false);
+	request.onload = function () {
+		if (request.status == 200) {
+			gett_auqa_temp.value = request.responseText;
+		} else gett_auqa_temp.value = 0;
+	};
+	request.send();
+}
 //получение времени
 function status_time() {
 	var request = new XMLHttpRequest();
-	request.open("GET", "/status_time", true);
+	request.open("GET", "/status_time", false);
 	request.onload = function () {
 		if (request.status == 200) {
 			time.value = request.responseText;
@@ -473,68 +1162,34 @@ function status_time() {
 }
 
 //получение времени
-function timer_time() {
-	var request = new XMLHttpRequest();
-	var request2 = new XMLHttpRequest();
-	var request3 = new XMLHttpRequest();
-	var request4 = new XMLHttpRequest();
+function timer_time_purple() {
 	var request6 = new XMLHttpRequest();
-	var request8 = new XMLHttpRequest();
-	var request10 = new XMLHttpRequest();
-	var request11 = new XMLHttpRequest();
-	var request12 = new XMLHttpRequest();
-	var request13 = new XMLHttpRequest();
-	var request14 = new XMLHttpRequest();
-
-	//Освещение
-	request.open("GET", "/timer_time_lighting_h_on", true);
-	request2.open("GET", "/timer_time_lighting_m_on", true);
-	request3.open("GET", "/timer_time_lighting_h_off", true);
-	request4.open("GET", "/timer_time_lighting_m_off", true);
-	//Ультрафиолет
 	request6.open("GET", "/timer_time_lighting_purple_m_off", true);
-	//Воздух растениям
-	request8.open("GET", "/timer_air_m_off", true);
-	//Вода из аквариума к растениям
-	request10.open("GET", "/timer_time_water_out_m_off", true);
-	//Кормушка
-	request11.open("GET", "/timer_time_food_h_1", true);
-	request12.open("GET", "/timer_time_food_m_1", true);
-	request13.open("GET", "/timer_time_food_h_2", true);
-	request14.open("GET", "/timer_time_food_m_2", true);
-
-	request.onload = function () {
-		//Освещение
-		timer_time_ligh_h_on.value = request.responseText;
-		timer_time_ligh_m_on.value = request2.responseText;
-		timer_time_ligh_h_off.value = request3.responseText;
-		timer_time_ligh_m_off.value = request4.responseText;
+	request6.onload = function () {
 		//Ультрафиолет
 		timer_time_ligh_purple_m_off.value = request6.responseText;
+	};
+	request6.send();
+}
+function timer_time_air() {
+	var request8 = new XMLHttpRequest();
+	request8.open("GET", "/timer_air_m_off", true);
+	request8.onload = function () {
 		//Воздух
 		timer_air_m_off.value = request8.responseText;
+	};
+	request8.send();
+}
+function timer_time_water() {
+	var request10 = new XMLHttpRequest();
+	//Вода из аквариума к растениям
+	request10.open("GET", "/timer_time_water_out_m_off", true);
+	request10.onload = function () {
 		//Вода из аквариума к растениям и вода от растений в аквариум
 		timer_water_out_m_off.value = request10.responseText;
-		//Кормушка
-		timer_food_h_1.value = request11.responseText;
-		timer_food_m_1.value = request12.responseText;
-		timer_food_h_2.value = request13.responseText;
-		timer_food_m_2.value = request14.responseText;
 	};
-	request.send();
-	request2.send();
-	request3.send();
-	request4.send();
-	request6.send();
-	request8.send();
 	request10.send();
-	request11.send();
-	request12.send();
-	request13.send();
-	request14.send();
 }
-
-
 
 document.addEventListener("DOMContentLoaded", relay_state_lighting);
 document.addEventListener("DOMContentLoaded", relay_state_lighting_purple);
@@ -544,8 +1199,11 @@ document.addEventListener("DOMContentLoaded", relay_state_water_in);
 document.addEventListener("DOMContentLoaded", relay_state_temp);
 document.addEventListener("DOMContentLoaded", auqa_temp);
 document.addEventListener("DOMContentLoaded", status_time);
-document.addEventListener("DOMContentLoaded", timer_time);
+document.addEventListener("DOMContentLoaded", timer_time_purple);
+document.addEventListener("DOMContentLoaded", timer_time_air);
+document.addEventListener("DOMContentLoaded", timer_time_water);
 
+document.addEventListener("DOMContentLoaded", g_auqa_temp);
 
 relay_lighting.addEventListener("click", relay_inverse_lighting);
 relay_lighting_purple.addEventListener("click", relay_inverse_lighting_purple);
@@ -553,4 +1211,16 @@ relay_air.addEventListener("click", relay_inverse_air);
 relay_water_out.addEventListener("click", relay_inverse_water_out);
 relay_water_in.addEventListener("click", relay_inverse_water_in);
 relay_temp.addEventListener("click", relay_inverse_temp);
-btn_set_timer_time_lighting_purple_m_off.addEventListener("click", setup_timer_time);
+btn_set_timer_time_lighting_purple_m_off.addEventListener(
+	"click",
+	setup_timer_time_min_purple
+);
+btn_setup_timer_time_lighting_air_m_off.addEventListener(
+	"click",
+	setup_timer_time_lighting_air_m_off
+);
+btn_setup_timer_time_water_out_m_off.addEventListener(
+	"click",
+	setup_timer_time_lighting_water_m_off
+);
+btn_setup_temp.addEventListener("click", setup_temp);
