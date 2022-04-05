@@ -18,6 +18,8 @@
     String AP       = "aboba";           // Здесь храним название точки доступа (роутера), к которой будем подключаться
     String PASSWORD = "222212003D@#";       // Здесь храним пароль для подключения к точке доступа (роутеру)
     String SSDP_Name = "AQUA_KVPTK";          // Здесь определяем название устройства в сетевом окружении
+   // String AP       = "KVPTK_Guest";           // Здесь храним название точки доступа (роутера), к которой будем подключаться
+   // String PASSWORD = "network15";       // Здесь храним пароль для подключения к точке доступа (роутеру)
 
     #include <iarduino_RTC.h>                                 // библиотека с часами RTC https://wiki.iarduino.ru/page/chasy-realnogo-vremeni-rtc-trema-modul/
     iarduino_RTC watch(RTC_DS3231);  
@@ -47,6 +49,8 @@
     const byte relayPin5 = D7;     // Вода от растений в аквариум
     const byte relayPin6 = D8;     // Кормушка рыб
     const byte relayPin7 = 3;     // Обогреватель 
+     const byte relayPin8 = 16;     // Воздух к рыбам
+
     
     int relaySTATE1 = HIGH;         // состояние реле Свет аквариума
     int relaySTATE2 = HIGH;         // состояние реле ультрафи 
@@ -55,7 +59,7 @@
     int relaySTATE5 = HIGH;         // Вода от растений в аквариум
     int relaySTATE6 = HIGH;         // Кормушка рыб
     int relaySTATE7 = HIGH;         // Обогреватель 
-    
+    int relaySTATE8 = HIGH;         // Воздух к растениям 
    
     int lighting_hours_on = 8;              // Свет аквариума таймер
     int lighting_min_on = 0;
@@ -71,6 +75,9 @@
     int air_min_on = 0;
     int air_hours_off;                 // Воздух к растениям таймер
     int air_min_off = 20;
+
+    int air_fish_min_on = 0;
+    int air_fish_min_off = 20;
     
     int water_out_hours_on;           // Вода из аквариума к растениям и вода от растений в аквариум
     int water_out_min_on = 0;
@@ -114,6 +121,8 @@ void setup()
     pinMode(relayPin5, OUTPUT);               // Вода от растений в аквариум
     pinMode(relayPin6, OUTPUT);               // Кормушка рыб
     pinMode(relayPin7, OUTPUT);               // Обогреватель
+    pinMode(relayPin8, OUTPUT);               // Воздух к рыбам
+
     
     digitalWrite(relayPin1, HIGH); 
     digitalWrite(relayPin2, HIGH);  
@@ -122,7 +131,7 @@ void setup()
     digitalWrite(relayPin5, HIGH);  
     digitalWrite(relayPin6, HIGH);   
     digitalWrite(relayPin7, HIGH);  
-     
+    digitalWrite(relayPin8, HIGH);  
    
     //HTPP запросы 
     
@@ -179,6 +188,14 @@ void setup()
      HTTP.on("/status_time", [] (){
       HTTP.send(200, "text/plain", status_time()); 
     });
+
+     HTTP.on("/relay_switch_air_fish", [] (){                                   // обогреватель
+      HTTP.send(200, "text/plain", relay_switch_air_fish()); 
+    });
+    HTTP.on("/relay_status_air_fish", [] (){
+      HTTP.send(200, "text/plain", relay_status_air_fish()); 
+    });
+
 
     
     
@@ -1921,7 +1938,25 @@ String setup_temp_c_30(){
   }
 
 
- 
+    String relay_switch_air_fish(){
+      byte state;
+      if(digitalRead(relayPin8))
+         state = 0;
+      else
+         state = 1;
+        digitalWrite(relayPin8,state);
+        return String(state);
+      }
+      
+    String relay_status_air_fish(){       // воздух для рыб
+      byte state;
+      if(digitalRead(relayPin8))
+         state = 0;
+      else
+         state = 1;
+        return String(state);
+    }
+
    
 
 

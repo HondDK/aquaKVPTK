@@ -6,6 +6,7 @@ var time = document.getElementById("status_time");
 let relay_lighting = document.getElementById("relay_lighting");
 let relay_lighting_purple = document.getElementById("relay_lighting_purple");
 let relay_air = document.getElementById("relay_air");
+let relay_air_fish = document.getElementById("relay_air_fish");
 let relay_water_out = document.getElementById("relay_water_out");
 let relay_water_in = document.getElementById("relay_water_in");
 let relay_temp = document.getElementById("relay_temp");
@@ -173,6 +174,42 @@ function relay_inverse_air() {
 	}
 	location.reload();
 }
+
+//Воздух рыбам
+function relay_state_air_fish() {
+	var request = new XMLHttpRequest();
+	request.open("GET", "/relay_status_air_fish", true);
+	request.onload = function () {
+		if (request.readyState == 4 && request.status == 200) {
+			var response = request.responseText;
+			relay_status = Number.parseInt(response);
+			if (relay_status == 0) {
+				relay_air_fish.classList.add("relay_off");
+			} else {
+				relay_air_fish.classList.add("relay_on");
+			}
+		}
+	};
+	request.send();
+}
+//Воздух рыбам
+function relay_inverse_air_fish() {
+	var request = new XMLHttpRequest();
+	request.open("GET", "/relay_switch_air_fish", false);
+	request.send();
+	if (request.readyState == 4 && request.status == 200) {
+		var response = request.responseText;
+		if (response == "0") {
+			relay_air_fish.classList.remove("relay_on");
+			relay_air_fish.classList.add("relay_off");
+		} else {
+			relay_air_fish.classList.remove("relay_off");
+			relay_air_fish.classList.add("relay_on");
+		}
+	}
+	location.reload();
+}
+
 //Вода из аквариума
 function relay_state_water_out() {
 	var request = new XMLHttpRequest();
@@ -1194,6 +1231,7 @@ function timer_time_water() {
 document.addEventListener("DOMContentLoaded", relay_state_lighting);
 document.addEventListener("DOMContentLoaded", relay_state_lighting_purple);
 document.addEventListener("DOMContentLoaded", relay_state_air);
+document.addEventListener("DOMContentLoaded", relay_state_air_fish);
 document.addEventListener("DOMContentLoaded", relay_state_water_out);
 document.addEventListener("DOMContentLoaded", relay_state_water_in);
 document.addEventListener("DOMContentLoaded", relay_state_temp);
@@ -1208,6 +1246,7 @@ document.addEventListener("DOMContentLoaded", g_auqa_temp);
 relay_lighting.addEventListener("click", relay_inverse_lighting);
 relay_lighting_purple.addEventListener("click", relay_inverse_lighting_purple);
 relay_air.addEventListener("click", relay_inverse_air);
+relay_air_fish.addEventListener("click", relay_inverse_air_fish);
 relay_water_out.addEventListener("click", relay_inverse_water_out);
 relay_water_in.addEventListener("click", relay_inverse_water_in);
 relay_temp.addEventListener("click", relay_inverse_temp);
