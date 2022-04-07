@@ -16,8 +16,8 @@
 
 		input[type="button"] {
 			position: relative;
-			top: 50%;
-			margin-top: 20px;
+
+
 			margin: auto;
 			border: 0;
 			background-color: transparent;
@@ -92,6 +92,10 @@
 			margin-top: 5px;
 			margin-bottom: 55px;
 		}
+
+		.div_info {
+			margin-top: 15px;
+		}
 	</style>
 </head>
 
@@ -100,56 +104,59 @@
 	<input class="temp" type="text" readonly min="0" value="" id="status_time" />
 	<h1>Текущая тeмпература воды:</h1>
 	<input type="text" readonly id="auqa_temp" value="" class="temp" />
-	<p>Установить температуру воды </p>
+
 	<p>Установленая температура <input type="text" readonly id="get_auqa_temp" value="" class="temp" /></p>
+	<p>Установить температуру воды </p>
 	<input type="number" min="10" max="34" id="set_auqa_temp" value="" class="setup_temp" />
+
 	<div class="div_setup_temp"><button class="btn_setup_temp" id="btn_setup_temp">Установить температуру</button>
 	</div>
-
-	<h1>Освещение </h1>
-	<p>Cвет в аквариуме с 8:00 до 20:00</p>
-	<input class="" type="button" value="" id="relay_lighting" />
-
-	<h1>Ультрафиолет </h1>
-	<p>Cвет ультрафиолетовый <input class="timer_time" id="timer_time_lighting_purple_m_off" type="text" readonly
-			value=""> минут в час с 8:00 до 20:00.</p>
-	<p>Установить время <input class="setup_timer_time" id="set_timer_time_lighting_purple_m_off" type="text" max="60"
-			min="0" value=" "> минут в час с 8:00 до 20:00. <button
-			id="btn_set_timer_time_lighting_purple_m_off">Установить время</button></p>
-	<input class="" type="button" value="" id="relay_lighting_purple" />
-
-	<h1>Воздух к растениям </h1>
-	<p>Воздух к растениям <input class="timer_time" id="timer_time_air_m_off" type="text" readonly value=""> минут в час
-		круглосуточно.</p>
-	<p>Воздух к растениям <input class="setup_timer_time" id="set_timer_time_air_m_off" type="text" max="60" min="0"
-			value=""> минут в час
-		круглосуточно.<button id="btn_set_timer_time_lighting_air_m_off">Установить время</button></p>
-	<input class="" type="button" value="" id="relay_air" />
-
-	<h1>Воздух к рыбам </h1>
-	<p>Воздух к рыбам <input class="timer_time" id="timer_time_air_fish_m_off" type="text" readonly value=""> минут в
-		час
-		круглосуточно.</p>
-	<p>Воздух к рыбам <input class="setup_timer_time" id="set_timer_fish_time_air_m_off" type="text" max="60" min="0"
-			value=""> минут в час
-		круглосуточно.<button id="btn_set_timer_time_lighting_fish_air_m_off">Установить время</button></p>
-	<input class="" type="button" value="" id="relay_air_fish" />
-
-
-	<h1>Вода из аквариума </h1>
-	<p>Вода из аквариума и вода в аквариум <input class="timer_time" id="timer_time_water_out_m_off" type="text"
-			readonly value=""> минут в час с 8:00 до 20:00.</p>
-	<p>Установить время <input class="setup_timer_time" id="set_timer_time_water_out_m_off" type="text" max="60" min="0"
-			value=""> минут в час с 8:00 до 20:00.<button id="btn_set_timer_time_water_out_m_off">Установить
-			время</button></p>
-
-	<input class="" type="button" value="" id="relay_water_out" />
-	<h1>Вода в аквариум </h1>
-	<input class="" type="button" value="" id="relay_water_in" />
-
-	<h1>Обогреватель </h1>
-	<input class="" type="button" value="" id="relay_temp" />
-
+	<div class="div_info">
+		<h1>Освещение </h1>
+		<p>Cвет в аквариуме с 8:00 до 20:00</p>
+		<input class="" type="button" value="" id="relay_lighting" />
+	</div>
+	<div class="div_info">
+		<h1>Ультрафиолет </h1>
+		<p>Cвет ультрафиолетовый <input class="timer_time" id="timer_time_lighting_purple_m_off" type="text" readonly
+				value=""> минут в час с 8:00 до 20:00.</p>
+		<p>Установить время <input class="setup_timer_time" id="set_timer_time_lighting_purple_m_off" type="text"
+				max="60" min="0" value=" "> минут в час с 8:00 до 20:00. <button
+				id="btn_set_timer_time_lighting_purple_m_off">Установить время</button></p>
+		<input class="" type="button" value="" id="relay_lighting_purple" />
+	</div>
+	<div class="div_info">
+		<h1>Воздух к растениям и рыбам </h1>
+		<p>Воздух к растениям и рыбам <input class="timer_time" id="timer_time_air_m_off" type="text" readonly value="">
+			минут в час
+			круглосуточно.</p>
+		<p>Воздух к растениям и рыбам <input class="setup_timer_time" id="set_timer_time_air_m_off" type="text" max="60"
+				min="0" value=""> минут в час
+			круглосуточно.<button id="btn_set_timer_time_lighting_air_m_off">Установить время</button></p>
+		<input class="" type="button" value="" id="relay_air" />
+		<h1>Воздух к рыбам </h1>
+		<input class="" type="button" value="" id="relay_air_fish" />
+	</div>
+	<div class="div_info">
+		<h1>Вода из аквариума </h1>
+		<p>Вода из аквариума и вода в аквариум <input class="timer_time" id="timer_time_water_out_m_off" type="text"
+				readonly value=""> минут в час с 8:00 до 20:00.</p>
+		<p>Установить время <input class="setup_timer_time" id="set_timer_time_water_out_m_off" type="text" max="60"
+				min="0" value=""> минут в час с 8:00 до 20:00.<button id="btn_set_timer_time_water_out_m_off">Установить
+				время</button></p>
+		<input class="" type="button" value="" id="relay_water_out" />
+		<h1>Вода в аквариум </h1>
+		<p>Секунды включения воды в аквариум <input class="timer_time" id="timer_time_water_out_sec_off" type="text"
+				readonly value=""></p>
+		<p>Установить секунды включения (5,10,15,20,25,30 и т.д) <input class="setup_timer_time"
+				id="set_timer_time_water_out_sec_off" type="text" max="60" min="0" value=""><button
+				id="btn_set_timer_time_water_out_sec_off">Установить время</button></p>
+		<input class="" type="button" value="" id="relay_water_in" />
+	</div>
+	<div class="div_info">
+		<h1>Обогреватель </h1>
+		<input class="" type="button" value="" id="relay_temp" />
+	</div>
 	<p>1 кормление рыб в 10:00</p>
 	<p> 2 кормление в 18:00</p>
 	<script src="/script.js"></script>

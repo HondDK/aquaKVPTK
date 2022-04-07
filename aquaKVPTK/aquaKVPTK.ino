@@ -25,14 +25,7 @@
     iarduino_RTC watch(RTC_DS3231);  
   
                                                              
-    //  Определяем системное время:                           // Время загрузки скетча.
-    const char* strM="JanFebMarAprMayJunJulAugSepOctNovDec";  // Определяем массив всех вариантов текстового представления текущего месяца.
-    const char* sysT=__TIME__;                                // Получаем время компиляции скетча в формате "SS:MM:HH".
-    const char* sysD=__DATE__;                                // Получаем дату  компиляции скетча в формате "MMM:DD:YYYY", где МММ - текстовое представление текущего месяца, например: Jul.
-    //  Парсим полученные значения sysT и sysD в массив i:    // Определяем массив «i» из 6 элементов типа String, содержащий следующие значения: секунды, минуты, часы, день, месяц и год компиляции скетча.
-    const int i[6] {(sysT[6]-48)*10+(sysT[7]-48), (sysT[3]-48)*10+(sysT[4]-48), (sysT[0]-48)*10+(sysT[1]-48), (sysD[4]-48)*10+(sysD[5]-48), ((int)memmem(strM,36,sysD,3)+3-(int)&strM[0])/3, (sysD[9]-48)*10+(sysD[10]-48)};
-
-    
+   
     const long utcOffsetInSeconds = 21600; // устанавливаем часовой пояс
     WiFiUDP ntpUDP;
     NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);//берем время с интернета
@@ -84,6 +77,7 @@
     int water_out_hours_off;           // Вода из аквариума к растениям и вода от растений в аквариум
     int water_out_min_off = 15;
     
+    int water_in_sec_off = 20;
     
     int food_hours_on_1 = 8;                // Кормушка рыб таймер
     int food_min_on_1 = 0;
@@ -196,6 +190,9 @@ void setup()
       HTTP.send(200, "text/plain", relay_status_air_fish()); 
     });
 
+   HTTP.on("/timer_time_water_in_sec", [] (){
+      HTTP.send(200, "text/plain", timer_time_water_in_sec()); 
+    });
 
     
     
@@ -760,82 +757,56 @@ void setup()
           HTTP.send(200, "text/plain", setup_timer_time_min_60_water()); 
         });
 
-
-/*
-       HTTP.on("/setup_timer_time_h_1", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_1()); 
+    
+         HTTP.on("/setup_timer_time_min_5_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_5_water_sec()); 
         });
-         HTTP.on("/setup_timer_time_h_2", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_2()); 
+      
+        HTTP.on("/setup_timer_time_min_10_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_10_water_sec()); 
         });
-         HTTP.on("/setup_timer_time_h_3", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_3()); 
+    
+        HTTP.on("/setup_timer_time_min_15_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_15_water_sec()); 
         });
-         HTTP.on("/setup_timer_time_h_4", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_4()); 
+     
+        HTTP.on("/setup_timer_time_min_20_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_20_water_sec()); 
         });
-         HTTP.on("/setup_timer_time_h_5", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_5()); 
+    
+        HTTP.on("/setup_timer_time_min_25_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_25_water_sec()); 
         });
-         HTTP.on("/setup_timer_time_h_6", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_6()); 
+   
+        HTTP.on("/setup_timer_time_min_30_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_30_water_sec()); 
         });
-         HTTP.on("/setup_timer_time_h_7", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_7()); 
+     
+         HTTP.on("/setup_timer_time_min_35_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_35_water_sec()); 
         });
-         HTTP.on("/setup_timer_time_h_8", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_8()); 
+    
+        HTTP.on("/setup_timer_time_min_40_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_40_water_sec()); 
         });
-         HTTP.on("/setup_timer_time_h_8", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_8()); 
+       
+         HTTP.on("/setup_timer_time_min_45_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_45_water_sec()); 
+       });
+         HTTP.on("/setup_timer_time_min_50_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_50_water_sec()); 
         });
-         HTTP.on("/setup_timer_time_h_9", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_9()); 
-        });
-         HTTP.on("/setup_timer_time_h_10", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_10()); 
-        });
-         HTTP.on("/setup_timer_time_h_11", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_11()); 
-        });
-         HTTP.on("/setup_timer_time_h_12", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_12()); 
-        });
-         HTTP.on("/setup_timer_time_h_13", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_13()); 
-        });
-         HTTP.on("/setup_timer_time_h_14", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_14()); 
-        });
-         HTTP.on("/setup_timer_time_h_15", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_15()); 
-        });
-         HTTP.on("/setup_timer_time_h_16", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_16()); 
-        });
-         HTTP.on("/setup_timer_time_h_17", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_17()); 
-        });
-         HTTP.on("/setup_timer_time_h_18", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_18()); 
-        });
-         HTTP.on("/setup_timer_time_h_19", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_19()); 
-        });
-         HTTP.on("/setup_timer_time_h_20", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_20()); 
-        });
-         HTTP.on("/setup_timer_time_h_21", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_21()); 
-        });
-         HTTP.on("/setup_timer_time_h_22", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_22()); 
-        });
-         HTTP.on("/setup_timer_time_h_23", [] (){
-          HTTP.send(200, "text/plain", setup_timer_time_h_23()); 
+   
+        HTTP.on("/setup_timer_time_min_55_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_55_water_sec()); 
+         });
+        HTTP.on("/setup_timer_time_min_60_water_sec", [] (){
+          HTTP.send(200, "text/plain", setup_timer_time_min_60_water_sec()); 
         });
 
-*/
+
+
+
 
          HTTP.on("/setup_temp_10", [] (){
           HTTP.send(200, "text/plain", setup_temp_c_10()); 
@@ -979,37 +950,37 @@ void loop()
      relaySTATE2 = HIGH;  
     }
   
-    //Воздух к растениям
+    //Воздух к растениям  и рыбам
     if(watch.minutes >= air_min_on && watch.minutes <= air_min_off ){
       digitalWrite(relayPin3, LOW);   
+       digitalWrite(relayPin8, LOW);  
       relaySTATE3 = LOW;  
+       relaySTATE8 = LOW;  
     }
     if(watch.minutes >= air_min_off ){
       digitalWrite(relayPin3, HIGH);   
+      digitalWrite(relayPin8, HIGH);   
       relaySTATE3 = HIGH;  
+      relaySTATE8 = HIGH;  
     }
     
     //Вода из аквариума к растениям и вода от растений к аквариуму
     if(watch.Hours >= 8 && watch.minutes >= water_out_min_on && watch.Hours < 20 ){
      digitalWrite(relayPin4, LOW);   
-     digitalWrite(relayPin5, LOW);   
      relaySTATE4 = LOW;     
-     relaySTATE5 = LOW;     
     }                                                        
     if(watch.Hours >= 8 && watch.minutes >= water_out_min_off && watch.Hours < 20 ){
      digitalWrite(relayPin4, HIGH);   
-     digitalWrite(relayPin5, HIGH);   
      relaySTATE4 = HIGH;     
+    }
+    if(watch.Hours >= 8 && watch.minutes >= water_out_min_on && watch.Hours < 20 && watch.seconds == water_in_sec_off ){
+     digitalWrite(relayPin5, LOW);  
+     relaySTATE5 = LOW;     
+    }                                                        
+    if(watch.Hours >= 8 && watch.minutes >= water_out_min_off && watch.Hours < 20 && watch.seconds == water_in_sec_off ){
+     digitalWrite(relayPin5, HIGH);      
      relaySTATE5 = HIGH;   
     }
-    /*
-    if(watch.Hours >= 20 ){
-     digitalWrite(relayPin4, HIGH);   
-     digitalWrite(relayPin5, HIGH);   
-     relaySTATE4 = HIGH;     
-     relaySTATE5 = HIGH;   
-    }
-    */
   
     //Кормушка
     if(watch.Hours == food_hours_on_1 && watch.minutes == food_min_on_1 && watch.seconds == 1){
@@ -1067,7 +1038,9 @@ void loop()
      }
 
 
-
+     String timer_time_water_in_sec(){
+      return String(water_in_sec_off);
+      }
 
 
 
@@ -1936,6 +1909,77 @@ String setup_temp_c_30(){
     water_out_min_off = 60;    
     return String(1); 
   }
+
+ 
+ 
+  
+  String setup_timer_time_min_5_water_sec(){
+    water_in_sec_off = 5;    
+    return String(1); 
+  }
+ 
+  String setup_timer_time_min_10_water_sec(){
+    water_in_sec_off = 10;    
+    return String(1); 
+  }
+ 
+  String setup_timer_time_min_15_water_sec(){
+    water_in_sec_off = 15;   
+    return String(1); 
+  }
+
+  String setup_timer_time_min_20_water_sec(){
+    water_in_sec_off = 20;    
+    return String(1); 
+  }
+ 
+  String setup_timer_time_min_25_water_sec(){
+    water_in_sec_off = 25; 
+    return String(1);    
+  }
+
+  String setup_timer_time_min_30_water_sec(){
+    water_in_sec_off = 30;    
+    return String(1); 
+  }
+  String setup_timer_time_min_35_water_sec(){
+    water_in_sec_off = 35;    
+    return String(1); 
+  }
+
+  String setup_timer_time_min_40_water_sec(){
+    water_in_sec_off = 40;    
+    return String(1); 
+  }
+ 
+  String setup_timer_time_min_45_water_sec(){
+    water_in_sec_off = 45;
+    return String(1);     
+  }
+
+  String setup_timer_time_min_50_water_sec(){
+    water_in_sec_off = 50;    
+    return String(1); 
+  }
+
+  String setup_timer_time_min_55_water_sec(){
+    water_in_sec_off = 55;    
+    return String(1); 
+  }
+ 
+  String setup_timer_time_min_60_water_sec(){
+    water_in_sec_off = 60;    
+    return String(1); 
+  }
+
+
+
+
+
+
+         
+  
+
 
 
     String relay_switch_air_fish(){
