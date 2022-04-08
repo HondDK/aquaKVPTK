@@ -578,6 +578,9 @@ function setup_timer_time_min_purple() {
 			request.open("GET", "/setup_timer_time_min_60_purple", false);
 			alert("Установлено!");
 			break;
+		default:
+			alert("Недопустимое значение!");
+			break;
 	}
 	request.send();
 	location.reload();
@@ -824,6 +827,9 @@ function setup_timer_time_lighting_air_m_off() {
 		case 60:
 			request.open("GET", "/setup_timer_time_min_60_air", false);
 			alert("Установлено!");
+			break;
+		default:
+			alert("Недопустимое значение!");
 			break;
 	}
 	request.send();
@@ -1072,6 +1078,259 @@ function setup_timer_time_lighting_air_m_off_fish() {
 			request.open("GET", "/setup_timer_time_min_60_air_fish", false);
 			alert("Установлено!");
 			break;
+		default:
+			alert("Недопустимое значение!");
+			break;
+	}
+	request.send();
+	location.reload();
+}
+function setup_timer_time_lighting_water_out() {
+	var request = new XMLHttpRequest();
+	value = Number.parseInt(setup_timer_time_water_out_m_off.value);
+	switch (value) {
+		case 1:
+			request.open("GET", "/setup_timer_time_min_1_water", false);
+			alert("Установлено!");
+			break;
+		case 2:
+			request.open("GET", "/setup_timer_time_min_2_water", false);
+			alert("Установлено!");
+			break;
+		case 3:
+			request.open("GET", "/setup_timer_time_min_3_water", false);
+			alert("Установлено!");
+			break;
+		case 4:
+			request.open("GET", "/setup_timer_time_min_4_water", false);
+			alert("Установлено!");
+			break;
+		case 5:
+			request.open("GET", "/setup_timer_time_min_5_water", false);
+			alert("Установлено!");
+			break;
+		case 6:
+			request.open("GET", "/setup_timer_time_min_6_water", false);
+			alert("Установлено!");
+			break;
+		case 7:
+			request.open("GET", "/setup_timer_time_min_7_water", false);
+			alert("Установлено!");
+			break;
+		case 8:
+			request.open("GET", "/setup_timer_time_min_8_water", false);
+			alert("Установлено!");
+			break;
+		case 9:
+			request.open("GET", "/setup_timer_time_min_9_water", false);
+			alert("Установлено!");
+			break;
+		case 10:
+			request.open("GET", "/setup_timer_time_min_10_water", false);
+			alert("Установлено!");
+			break;
+		case 11:
+			request.open("GET", "/setup_timer_time_min_11_water", false);
+			alert("Установлено!");
+			break;
+		case 12:
+			request.open("GET", "/setup_timer_time_min_12_water", false);
+			alert("Установлено!");
+			break;
+		case 13:
+			request.open("GET", "/setup_timer_time_min_13_water", false);
+			alert("Установлено!");
+			break;
+		case 14:
+			request.open("GET", "/setup_timer_time_min_14_water", false);
+			alert("Установлено!");
+			break;
+		case 15:
+			request.open("GET", "/setup_timer_time_min_15_water", false);
+			alert("Установлено!");
+			break;
+		case 16:
+			request.open("GET", "/setup_timer_time_min_16_water", false);
+			alert("Установлено!");
+			break;
+		case 17:
+			request.open("GET", "/setup_timer_time_min_17_water", false);
+			alert("Установлено!");
+			break;
+		case 18:
+			request.open("GET", "/setup_timer_time_min_18_water", false);
+			alert("Установлено!");
+			break;
+		case 19:
+			request.open("GET", "/setup_timer_time_min_19_water", false);
+			alert("Установлено!");
+			break;
+		case 20:
+			request.open("GET", "/setup_timer_time_min_20_water", false);
+			alert("Установлено!");
+			break;
+		case 21:
+			request.open("GET", "/setup_timer_time_min_21_water", false);
+			alert("Установлено!");
+			break;
+		case 22:
+			request.open("GET", "/setup_timer_time_min_22_water", false);
+			alert("Установлено!");
+			break;
+		case 23:
+			request.open("GET", "/setup_timer_time_min_23_water", false);
+			alert("Установлено!");
+			break;
+		case 24:
+			request.open("GET", "/setup_timer_time_min_24_water", false);
+			alert("Установлено!");
+			break;
+		case 25:
+			request.open("GET", "/setup_timer_time_min_25_water", false);
+			alert("Установлено!");
+			break;
+		case 26:
+			request.open("GET", "/setup_timer_time_min_26_water", false);
+			alert("Установлено!");
+			break;
+		case 27:
+			request.open("GET", "/setup_timer_time_min_27_water", false);
+			alert("Установлено!");
+			break;
+		case 28:
+			request.open("GET", "/setup_timer_time_min_28_water", false);
+			alert("Установлено!");
+			break;
+		case 29:
+			request.open("GET", "/setup_timer_time_min_29_water", false);
+			alert("Установлено!");
+			break;
+		case 30:
+			request.open("GET", "/setup_timer_time_min_30_water", false);
+			alert("Установлено!");
+			break;
+		case 31:
+			request.open("GET", "/setup_timer_time_min_31_water", false);
+			alert("Установлено!");
+			break;
+		case 32:
+			request.open("GET", "/setup_timer_time_min_32_water", false);
+			alert("Установлено!");
+			break;
+		case 33:
+			request.open("GET", "/setup_timer_time_min_33_water", false);
+			alert("Установлено!");
+			break;
+		case 34:
+			request.open("GET", "/setup_timer_time_min_34_water", false);
+			alert("Установлено!");
+			break;
+		case 35:
+			request.open("GET", "/setup_timer_time_min_35_water", false);
+			alert("Установлено!");
+			break;
+		case 36:
+			request.open("GET", "/setup_timer_time_min_36_water", false);
+			alert("Установлено!");
+			break;
+		case 37:
+			request.open("GET", "/setup_timer_time_min_37_water", false);
+			alert("Установлено!");
+			break;
+		case 38:
+			request.open("GET", "/setup_timer_time_min_38_water", false);
+			alert("Установлено!");
+			break;
+		case 39:
+			request.open("GET", "/setup_timer_time_min_39_water", false);
+			alert("Установлено!");
+			break;
+		case 40:
+			request.open("GET", "/setup_timer_time_min_40_water", false);
+			alert("Установлено!");
+			break;
+		case 41:
+			request.open("GET", "/setup_timer_time_min_41_water", false);
+			alert("Установлено!");
+			break;
+		case 42:
+			request.open("GET", "/setup_timer_time_min_42_water", false);
+			alert("Установлено!");
+			break;
+		case 43:
+			request.open("GET", "/setup_timer_time_min_43_water", false);
+			alert("Установлено!");
+			break;
+		case 44:
+			request.open("GET", "/setup_timer_time_min_44_water", false);
+			alert("Установлено!");
+			break;
+		case 45:
+			request.open("GET", "/setup_timer_time_min_45_water", false);
+			alert("Установлено!");
+			break;
+		case 46:
+			request.open("GET", "/setup_timer_time_min_46_water", false);
+			alert("Установлено!");
+			break;
+		case 47:
+			request.open("GET", "/setup_timer_time_min_47_water", false);
+			alert("Установлено!");
+			break;
+		case 48:
+			request.open("GET", "/setup_timer_time_min_48_water", false);
+			alert("Установлено!");
+			break;
+		case 49:
+			request.open("GET", "/setup_timer_time_min_49_water", false);
+			alert("Установлено!");
+		case 50:
+			request.open("GET", "/setup_timer_time_min_50_water", false);
+			alert("Установлено!");
+			break;
+		case 51:
+			request.open("GET", "/setup_timer_time_min_51_water", false);
+			alert("Установлено!");
+			break;
+		case 52:
+			request.open("GET", "/setup_timer_time_min_52_water", false);
+			alert("Установлено!");
+			break;
+		case 53:
+			request.open("GET", "/setup_timer_time_min_53_water", false);
+			alert("Установлено!");
+			break;
+		case 54:
+			request.open("GET", "/setup_timer_time_min_54_water", false);
+			alert("Установлено!");
+			break;
+		case 55:
+			request.open("GET", "/setup_timer_time_min_55_water", false);
+			alert("Установлено!");
+			break;
+		case 56:
+			request.open("GET", "/setup_timer_time_min_56_water", false);
+			alert("Установлено!");
+			break;
+		case 57:
+			request.open("GET", "/setup_timer_time_min_57_water", false);
+			alert("Установлено!");
+			break;
+		case 58:
+			request.open("GET", "/setup_timer_time_min_58_water", false);
+			alert("Установлено!");
+			break;
+		case 59:
+			request.open("GET", "/setup_timer_time_min_59_water", false);
+			alert("Установлено!");
+			break;
+		case 60:
+			request.open("GET", "/setup_timer_time_min_60_water", false);
+			alert("Установлено!");
+			break;
+		default:
+			alert("Недопустимое значение!");
+			break;
 	}
 	request.send();
 	location.reload();
@@ -1181,6 +1440,9 @@ function setup_temp() {
 			request.open("GET", "/setup_temp_34", false);
 			alert("Установлено!");
 			break;
+		default:
+			alert("Недопустимое значение!(От 10 градусов до 34!)");
+			break;
 	}
 	request.send();
 	location.reload();
@@ -1237,6 +1499,9 @@ function setup_timer_time_water_in_m_off() {
 		case 60:
 			request.open("GET", "/setup_timer_time_min_60_water_sec", false);
 			alert("Установлено!");
+			break;
+		default:
+			alert("Недопустимое значение!(5,10,15,20,25,30 и т.д)");
 			break;
 	}
 	request.send();
@@ -1354,4 +1619,8 @@ btn_setup_temp.addEventListener("click", setup_temp);
 btn_set_timer_time_water_out_sec_off.addEventListener(
 	"click",
 	setup_timer_time_water_in_m_off
+);
+btn_setup_timer_time_water_out_m_off.addEventListener(
+	"click",
+	setup_timer_time_lighting_water_out
 );
